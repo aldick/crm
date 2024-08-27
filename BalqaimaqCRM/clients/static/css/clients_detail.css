@@ -1,0 +1,25 @@
+p {
+	font-size: 24px;
+}
+
+.heading {
+	display: flex;	
+}
+
+.heading > button {
+	margin-right: 100px;
+}
+
+.heading > button > a {
+	color: white;
+	font-size: 22px;
+}
+
+.main {
+	display: block;
+	margin-left: 50px;
+}
+
+.change {
+	margin-left: 100px;
+}

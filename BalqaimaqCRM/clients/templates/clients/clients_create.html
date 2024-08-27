@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/clients_create.css' %}">
+{% endblock link %}
+
+{% block title %}Новый клиент{% endblock title %}
+
+{% block body %}
+	<div class="heading">
+		<button onclick="window.location='{% url 'clients_list' %}'"><a href="{% url 'clients_list' %}">←</a></button>
+		<h1>Создание нового клиента</h1>
+	</div>
+	<form method="post">
+		{% csrf_token %}
+
+		{{ form.as_p }}
+		<button type="submit">Создать</button>
+	</form>
+{% endblock body %}
