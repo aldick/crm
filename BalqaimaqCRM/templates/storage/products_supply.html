@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_update.css' %}">
+{% endblock link %}
+
+
+{% block body %}
+	<button onclick="window.location='{% url 'products_list' %}'" class="back"><-</button>
+	
+	<h1>Добавление продукта в склад</h1>
+
+	<form action="" method="post">
+		{% csrf_token %}
+
+		{{ form.as_p }}
+
+		<button type="submit">Добавить</button>
+	</form>
+{% endblock body %}

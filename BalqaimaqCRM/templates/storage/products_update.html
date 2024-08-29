@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_update.css' %}">
+	<link rel="stylesheet" href="{% static 'css/products_detail.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Изменение {{ product.name }}
+{% endblock title %}
+
+{% block body %}
+	<button class="back" onclick="window.location='{% url 'products_detail' product.id %}'">←</button>
+
+	<div class="center">
+		<div class="detail">
+			<img src="{{ product.image.url }}" alt="" class="detail-image">
+			<div class="detail-text">
+				<form method="post">
+					{% csrf_token %}
+			
+					{{ form.as_p }}
+					<button type="submit">Сохранить</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_list.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Список продуктов
+{% endblock title %}
+
+{% block body %}
+
+	<button onclick="window.location='{% url 'products_supply' %}'">+ Добавить продукцию в склад</button>
+	<div class="container">
+		<div class="products-list">
+			{% for product in products_list %}
+				<div class="product-item">
+					<img class="product-item-img" src="{{ product.image.url }}">
+					<p class="product-item-name">{{ product.name }}</p>
+					<p class="product-item-amount">Количество: {{ product.amount }}</p>
+					<p class="product-item-price">Цена: {{ product.sell_price }}</p>
+					<button onclick="window.location='{{ product.get_absolute_url }}'" class="product-item-button">Подробнее</button>
+				</div>
+			{% endfor %}
+			<div onclick="window.location='{% url 'products_create' %}'" class="product-add">
+				<p>+</p>
+				<p>Новый товар</p>
+			</div>
+		</div>
+	</div>
+{% endblock body %}

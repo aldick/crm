@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_detail.css' %}">
+{% endblock link %}
+
+{% block title %}
+	{{ product.name }}
+{% endblock title %}
+
+{% block body %}
+	<button class="back" onclick="window.location='{% url 'products_list' %}'">←</button>
+
+	<div class="center">
+		<div class="detail">
+			<img src="{{ product.image.url }}" alt="" class="detail-image">
+			<div class="detail-text">
+				<h1 class="detail-name">{{ product.name }}</h1>
+				<p class="detail-sell-price">Цена при продаже: {{ product.sell_price }} тг</p>
+				<p class="detail-cost-price">Себестоимость: {{ product.cost_price }} тг</p>
+				<p class="detail-description">Описание: <br> {{ product.description|linebreaks }}</p>
+				<button onclick="window.location='{% url 'products_update' product.id %}'" class="detail-button">Изменить</button>	
+			</div>
+		</div>
+	</div>
+{% endblock body %}

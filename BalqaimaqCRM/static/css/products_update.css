@@ -1,0 +1,9 @@
+h1 {
+	margin-top: 50px;
+}
+
+form > p > label,
+form > p > input,
+form > p > textarea {
+	font-size: 20px;
+}

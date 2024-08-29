@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{% block title %}{% endblock title %}</title>
+
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+	{% block link %}{% endblock link %}
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<img class="header-img" src="../../static/img/balqaimaq-logo.png" alt="">
+
+		<ul class="header-list">
+			<li class="header-item"><a {% if section == "" %}class="selected"{% else %}class="not-selected"{% endif %} href="#">Заказ</a></li>
+			<li class="header-item"><a {% if section == "clients" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'clients_list' %}">Клиенты</a></li>
+			<li class="header-item"><a {% if section == "storage" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'products_list' %}">Склад</a></li>
+			<li class="header-item"><a {% if section == "dashboard" %}class="selected"{% else %}class="not-selected"{% endif %} href="#">Аналитика</a></li>
+		</ul>
+	</header>
+
+	<div class="main">
+		{% block body %}
+
+		{% endblock body %}
+	</div>	
+</body>
+</html>

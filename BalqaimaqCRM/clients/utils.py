@@ -1,6 +1,4 @@
 #Launched in python manage.py shell
-
-
 import random
 
 from .models import Client

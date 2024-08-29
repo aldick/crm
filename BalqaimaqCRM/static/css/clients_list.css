@@ -1,0 +1,47 @@
+button {
+	width: 100%;
+	background-color: #ff9900;
+	height: 40px;
+	margin-bottom: 10px;
+	border-color: #ff9900;
+	box-shadow: none;
+	border-style: none;
+}
+
+button > a {
+	color: white;
+	font-size: 1.5em;
+	font-family: "Comfortaa", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 700;
+	font-style: normal;
+	text-decoration: none;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	box-sizing: border-box;
+}
+
+tr:hover {
+	cursor: pointer;
+}
+
+th {
+	background-color: #0394F3;
+	color: white;
+}
+
+th, td {
+	font-size: 1.5em;
+	padding: 10px;
+}
+
+.white {
+	background-color: white;
+}
+
+.gray {
+	background-color: #e3e3e3;
+}	
