@@ -1,17 +1,28 @@
-from django.shortcuts import render, get_object_or_404, resolve_url, redirect
+from django.shortcuts import render, get_object_or_404, resolve_url, redirect, Http404
 
 from .models import Product
 from .forms import ProductForm, SupplyForm
 
 def products_list_view(request):
-    products_list = Product.objects.all()
+    products_list = Product.objects.filter(available=True)
     return render(request, "storage/products_list.html", {
+        "section": "storage",
+        "products_list": products_list
+    })
+    
+def products_table_view(request, slug=None):
+    products_list = Product.objects.filter(available=True)
+    if slug:
+        products_list = products_list.order_by(slug)
+    return render(request, "storage/products_table.html", {
         "section": "storage",
         "products_list": products_list
     })
     
 def products_detail_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    if not product.available:
+        raise Http404("Страница не найдена")
     return render(request, "storage/products_detail.html", {
         "section": "storage",
         "product": product
@@ -33,6 +44,8 @@ def products_create_view(request):
 
 def products_update_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    if not product.available:
+        raise Http404("Страница не найдена")
     if request.method == "POST":    
         form = ProductForm(instance=product,
                           data=request.POST)
@@ -66,3 +79,18 @@ def products_supply_view(request):
         "section": "storage",
         "form": form,
     })
+
+def products_delete_view(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if not product.available:
+        raise Http404("Страница не найдена")
+    
+    if request.method == "POST":
+        product.available = False
+        product.save()
+        return redirect('products_list')
+    return render(request, "storage/products_delete.html", {
+        'section': "storage",
+        "product": product 
+    })
+    

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_list.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Список продуктов
+{% endblock title %}
+
+{% block body %}
+	<div class="container">
+		<button class="supply" onclick="window.location='{% url 'products_supply' %}'">+ Добавить продукцию в склад</button>
+		<button onclick="window.location='{% url 'products_list' %}'" class="table">Список</button>
+	</div>
+	<div class="container">
+		<table>
+			<tr>
+				<th>Изображение</th>
+				<th onclick="window.location='{% url 'products_table' %}'">ID</th>
+				<th onclick="window.location='{% url 'products_table_order_by' 'name' %}'">Имя</th>
+				<th onclick="window.location='{% url 'products_table_order_by' 'sell_price' %}'">Стоимость</th>
+				<th onclick="window.location='{% url 'products_table_order_by' 'cost_price' %}'">Себестоимость</th>
+				<th onclick="window.location='{% url 'products_table_order_by' 'description' %}'">Описание</th>
+			</tr>
+			{% for product in products_list %}
+				{% if forloop.counter0|divisibleby:2 %}
+					<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="white">
+						<td><img src="{{ product.image.url }}" alt=""></td>
+						<td>{{product.id}}</td>
+						<td>{{product.name}}</td>
+						<td>{{product.sell_price}} ₸</td>
+						<td>{{product.cost_price}} ₸</td>
+						<td>{{product.description|linebreaks}}</td>
+					</tr>
+				{% else %}
+				<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="gray">
+					<td><img src="{{ product.image.url }}" alt=""></td>
+					<td>{{product.id}}</td>
+					<td>{{product.name}}</td>
+					<td>{{product.sell_price}} ₸</td>
+					<td>{{product.cost_price}} ₸</td>
+					<td>{{product.description|linebreaks}}</td>
+				</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

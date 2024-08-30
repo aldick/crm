@@ -14,6 +14,7 @@
 		<h1>Клиент #{{ client.id }}</h1>
 
 		<button class="change" onclick="window.location='{% url 'clients_update' client.id %}'">Изменить</button>
+		<button class="delete" onclick="window.location='{% url 'clients_delete' client.id %}'">Удалить</button>
 	</div>
 
 	<p><b>Имя: </b>{{ client.name }}</p>

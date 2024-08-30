@@ -20,7 +20,8 @@
 				<p class="detail-sell-price">Цена при продаже: {{ product.sell_price }} тг</p>
 				<p class="detail-cost-price">Себестоимость: {{ product.cost_price }} тг</p>
 				<p class="detail-description">Описание: <br> {{ product.description|linebreaks }}</p>
-				<button onclick="window.location='{% url 'products_update' product.id %}'" class="detail-button">Изменить</button>	
+				<button onclick="window.location='{% url 'products_update' product.id %}'" class="detail-button">Изменить</button>
+				<button onclick="window.location='{% url 'products_delete' product.id %}'" class="detail-button">Удалить</button>	
 			</div>
 		</div>
 	</div>

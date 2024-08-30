@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<button onclick="window.location='{% url 'clients_detail' client.id %}'" class="back"><-</button>
+
+<div class="center">
+	<h1>Удалить клиента</h1>
+
+	<p>Вы точно хотите удалить этого клиента?: <br> {{ client.name }} {{ client.phone_number }}</p>
+
+	<form action="" method="post">
+	{% csrf_token %}
+	<button type="submit">Удалить</button>
+	</form>
+</div>
+{% endblock body %}
