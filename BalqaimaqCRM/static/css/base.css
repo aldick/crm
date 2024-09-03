@@ -8,6 +8,10 @@ a {
 	text-decoration: none;
 }
 
+ul, li {
+	list-style: none;
+}
+
 button {
 	background-color: #ff9900;
 	border: none;

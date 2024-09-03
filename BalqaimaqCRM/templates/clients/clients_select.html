@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/clients_select.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Новый заказ
+{% endblock title %}
+
+{% block body %}
+	<div class="center">
+		<div class="search">
+			<h1>Создание нового заказа</h1>
+			<form method="get">
+				{{ form.as_table }}
+				<button>Search</button>
+			</form>
+			{% if clients.count == 0 %}
+				<ul class="search-results">
+					<li><a href="{% url 'clients_create' %}?phone_number={{phone_number}}&next=order">+ Создать нового клиента</a></li>
+				</ul>
+			{% else %}
+				<ul class="search-results">
+						{% for client in clients %}
+							<li><a href="{% url 'clients_detail' client.id %}">{{ client.name }}, {{ client.phone_number }}</a></li>
+						{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+{% endblock body %}

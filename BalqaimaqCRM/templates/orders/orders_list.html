@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Заказы
+{% endblock title %}
+
+{% block body %}
+	<div class="center">
+		<button onclick="window.location='{% url 'clients_select' %}'">+ Новый заказ</button>
+	</div>
+{% endblock body %}

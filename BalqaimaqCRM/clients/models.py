@@ -9,5 +9,5 @@ class Client(models.Model):
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
-        return self.name + " " + self.phone_number
+        return self.phone_number
     

@@ -18,7 +18,7 @@
 		<img class="header-img" src="../../static/img/balqaimaq-logo.png" alt="">
 
 		<ul class="header-list">
-			<li class="header-item"><a {% if section == "" %}class="selected"{% else %}class="not-selected"{% endif %} href="#">Заказ</a></li>
+			<li class="header-item"><a {% if section == "orders" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_list' %}">Заказы</a></li>
 			<li class="header-item"><a {% if section == "clients" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'clients_list' %}">Клиенты</a></li>
 			<li class="header-item"><a {% if section == "storage" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'products_list' %}">Склад</a></li>
 			<li class="header-item"><a {% if section == "dashboard" %}class="selected"{% else %}class="not-selected"{% endif %} href="#">Аналитика</a></li>

@@ -13,6 +13,9 @@ class ClientCreateForm(forms.ModelForm):
         if phone_number[0] == "8":
             phone_number = "+" + phone_number.replace("8", '7', 1)
             
+        if phone_number[0] == "7":
+            phone_number = "+" + phone_number
+            
         if len(phone_number) != 12:
             raise forms.ValidationError("Введен неправильный номер")
         
@@ -21,7 +24,6 @@ class ClientCreateForm(forms.ModelForm):
 		
         return phone_number
     
-
 class ClientUpdateForm(forms.ModelForm):
     class Meta:
         model = Client
@@ -37,3 +39,8 @@ class ClientUpdateForm(forms.ModelForm):
             raise forms.ValidationError("Введен неправильный номер")
         
         return phone_number
+    
+class ClientSelectForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['phone_number']
