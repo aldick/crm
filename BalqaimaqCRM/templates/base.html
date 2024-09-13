@@ -16,7 +16,6 @@
 <body>
 	<header>
 		<img class="header-img" src="../../static/img/balqaimaq-logo.png" alt="">
-		{{request.META.HTTP_REFERER}}
 
 		<ul class="header-list">
 			<li class="header-item"><a {% if section == "orders" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_list' %}">Заказы</a></li>
