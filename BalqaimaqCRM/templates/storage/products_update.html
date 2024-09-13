@@ -11,7 +11,7 @@
 {% endblock title %}
 
 {% block body %}
-	<button class="back" onclick="window.location='{% url 'products_detail' product.id %}'">←</button>
+	<button class="back" onclick="history.back()">←</button>
 
 	<div class="center">
 		<div class="detail">

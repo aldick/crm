@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<button onclick="window.location='{% url 'products_detail' product.id %}'" class="back"><-</button>
+<button onclick="history.back()" class="back">←</button>
 
 <div class="center">
 	<h1>Удалить продукт</h1>

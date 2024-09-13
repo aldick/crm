@@ -8,7 +8,7 @@
 {% block title %}Новый клиент{% endblock title %}
 
 {% block body %}
-	<button class="back" onclick="window.location='{% url 'clients_list' %}'"><-</button>
+	<button class="back" onclick="history.back()">←</button>
 	<div class="center">
 		<h1>Создание нового клиента</h1>
 		<form method="post">

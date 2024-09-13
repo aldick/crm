@@ -10,13 +10,13 @@ class ClientCreateForm(forms.ModelForm):
     def clean_phone_number(self):
         phone_number = self.cleaned_data["phone_number"]
         
-        if phone_number[0] == "8":
-            phone_number = "+" + phone_number.replace("8", '7', 1)
+        if phone_number[0] == "+":
+            phone_number = phone_number.replace("+", '', 1)
+        
+        elif phone_number[0] == "8":
+            phone_number = phone_number.replace("8", '7', 1)
             
-        if phone_number[0] == "7":
-            phone_number = "+" + phone_number
-            
-        if len(phone_number) != 12:
+        if len(phone_number) != 11:
             raise forms.ValidationError("Введен неправильный номер")
         
         if Client.objects.filter(phone_number=phone_number).exists():
@@ -32,15 +32,18 @@ class ClientUpdateForm(forms.ModelForm):
     def clean_phone_number(self):
         phone_number = self.cleaned_data["phone_number"]
         
-        if phone_number[0] == "8":
-            phone_number = "+" + phone_number.replace("8", '7', 1)
-            
-        if len(phone_number) != 12:
-            raise forms.ValidationError("Введен неправильный номер")
+        if phone_number[0] == "+":
+            phone_number = phone_number.replace("+", '', 1)
         
+        elif phone_number[0] == "8":
+            phone_number = phone_number.replace("8", '7', 1)
+            
+        if len(phone_number) != 11:
+            raise forms.ValidationError("Введен неправильный номер")
+		
         return phone_number
     
 class ClientSelectForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['phone_number']
+        fields = 'phone_number',

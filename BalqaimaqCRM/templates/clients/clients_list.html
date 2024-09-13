@@ -15,23 +15,20 @@
 
 		<table>
 			<tr>
-				<th onclick="window.location='{% url 'clients_list' %}'">ID</th>
 				<th onclick="window.location='{% url 'clients_list_order_by' "phone_number" %}'">Номер телефона</th>
 				<th onclick="window.location='{% url 'clients_list_order_by' "name" %}'">Имя</th>
 				<th onclick="window.location='{% url 'clients_list_order_by' "address" %}'">Адрес</th>
 			</tr>
 			{% for client in clients %}
 				{% if forloop.counter0|divisibleby:2 %}
-					<tr onclick="window.location='{% url 'clients_detail' client.id %}'" class="white">
-						<td>{{client.id}}</td>
-						<td>{{client.phone_number}}</td>
+					<tr onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="white">
+						<td>+{{client.phone_number}}</td>
 						<td>{{client.name}}</td>
 						<td>{{client.address}}</td>
 					</tr>
 				{% else %}
-					<tr onclick="window.location='{% url 'clients_detail' client.id %}'" class="gray">
-						<td>{{client.id}}</td>
-						<td>{{client.phone_number}}</td>
+					<tr onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="gray">
+						<td>+{{client.phone_number}}</td>
 						<td>{{client.name}}</td>
 						<td>{{client.address}}</td>
 					</tr>

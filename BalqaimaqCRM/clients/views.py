@@ -3,6 +3,7 @@ from django.db.models import Q
 
 from .forms import ClientCreateForm, ClientUpdateForm, ClientSelectForm
 from .models import Client
+from orders.models import Order
 
 def clients_list_order_view(request, slug):
     clients = Client.objects.filter(is_active=True)
@@ -23,9 +24,11 @@ def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
         raise Http404("Страница не найдена")
+    orders = Order.objects.filter(phone_number=client.phone_number,)
     return render(request, 'clients/clients_detail.html', {
         "section": "clients",
-		"client": client
+		"client": client,
+        "orders": orders
     })
     
 def clients_create_view(request, slug=None):
@@ -94,12 +97,20 @@ def clients_select_view(request, phone_number=None):
     clients = Client.objects.filter(phone_number="1")
     if 'phone_number' in request.GET:
         q = request.GET['phone_number']
-        multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q))
-        clients = Client.objects.filter(multiple_q).filter(is_active=True)
-        
-        phone_number = Client.objects.create(phone_number=request.GET.get("phone_number"))
-        form = ClientSelectForm(instance=phone_number)
-        phone_number.delete()
+        print(q)
+        if q[0] == "+":
+            q = q.replace("+", '', 1)
+        elif q[0] == "8":
+            q = q.replace("8", '7', 1)
+        print(q)
+        if len(q) == 11:
+            multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q)) 
+            clients = Client.objects.filter(multiple_q).filter(is_active=True)
+            
+            if clients.exists():
+                phone_number = Client.objects.get(phone_number=q)
+                form = ClientSelectForm(instance=phone_number)
+        # phone_number.delete()
     
     return render(request, "clients/clients_select.html", {
         "section": "orders",

@@ -86,6 +86,12 @@ DATABASES = {
     }
 }
 
+LANGUAGE_CODE = 'ru-RU'
+TIME_ZONE = 'Europe/Astana'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

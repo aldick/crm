@@ -1,29 +1,61 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block link %}
 	<link rel="stylesheet" href="{% static 'css/clients_detail.css' %}">
 {% endblock link %}
 
-{% block title %}Клиент #{{ client.id }}{% endblock title %}
+{% block title %}Клиент {{ client.phone_number }}{% endblock title %}
 
 {% block body %}
 	<div class="heading">
+		{% if "update" in request.META.HTTP_REFERER %}
 		<button onclick="window.location='{% url 'clients_list' %}'">←</button>
+		{% else %}
+		<button onclick="history.back()">←</button> 
+		{% endif %}
 		
-		<h1>Клиент #{{ client.id }}</h1>
+		<h1>Клиент +{{ client.phone_number }}</h1>
 
-		<button class="change" onclick="window.location='{% url 'clients_update' client.id %}'">Изменить</button>
-		<button class="delete" onclick="window.location='{% url 'clients_delete' client.id %}'">Удалить</button>
+		<button class="change" onclick="window.location='{% url 'clients_update' client.phone_number %}'">Изменить</button>
+		<button class="delete" onclick="window.location='{% url 'clients_delete' client.phone_number %}'">Удалить</button>
 	</div>
 
 	<p><b>Имя: </b>{{ client.name }}</p>
-	<p><b>Номер телефона: </b>{{ client.phone_number }}</p>
+	<p><b>Номер телефона: +</b>{{ client.phone_number }}</p>
 	<p><b>Последний адрес доставки: </b>{{ client.address }}</p>
 
 	<br>
 
 	{% comment %} TODO: добавить таблицу с заказами {% endcomment %}
 	<h1>Заказы:</h1>
-	<p>Список заказов клиентов будет добавлен в будущем...</p>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Дата</th>
+			<th>Адрес</th>
+			<th>Сумма</th>
+		</tr>
+
+		{% for order in orders %}
+			{% if forloop.counter0|divisibleby:2 %}
+			<tr class="white" onclick="window.location='{% url 'orders_detail' order.id %}'">
+				<td>{{ order.id }}</td>
+				<td>{{ order.created_at|date:"j.m.Y Время: H:i" }}</td>
+				<td>{{ order.address }}</td>
+				<td>{{ order.get_total_cost }}</td>
+			</tr>
+			{% else %}
+			<tr class="gray" onclick="window.location='{% url 'orders_detail' order.id %}'">
+				<td>{{ order.id }}</td>
+				<td>{{ order.created_at|date:"j.m.Y Время: H:i" }}</td>
+				<td>{{ order.address }}</td>
+				<td>{{ order.get_total_cost }}</td>
+			</tr>
+			{% endif %}
+		{% endfor %}
+	</table>
+	{% comment %} <p>Список заказов клиентов будет добавлен в будущем...</p> {% endcomment %}
+
 {% endblock body %}

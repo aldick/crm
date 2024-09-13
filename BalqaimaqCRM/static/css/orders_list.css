@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --item-width: 288px;
+  --item-height: 140px;
+  --column-width: 300px;
+}
+
+body {
+  color: #333;
+}
+
+.board {
+  display: flex;
+}
+
+.column {
+  width: var(--column-width);
+  border: 1px dotted #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  min-height: 70vh;
+}
+
+.column1 {
+  background-color: #E7B023;
+}
+
+.column2 {
+  background-color: #EC8124;
+}
+
+.column3 {
+  background-color: #0CB1E5;
+}
+
+.column4 {
+  background-color: #0C70E5;
+}
+
+.board-column-header,
+.board-column-price {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  cursor: move;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 10px;
+}
+
+.board-column-price {
+  margin-top: 0;
+  font-weight: 200;
+}
+
+.board-item {
+  background-color: #ffffff;
+  border: 1px dotted #9ecda8;
+  border-radius: 5px;
+  padding: 7px;
+  cursor: move;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.board-item-content-text {
+  margin-top: 5px;
+}
+
+.phone_number, 
+.id {
+  pointer-events: all;
+  color:black;
+}
+
+.id {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.price {
+  display: block;
+  margin-top: 10px; 
+  text-align: end;
+  width: 100%;
+  font-size: 25px;
+}
+
+.board-item-content {
+  pointer-events: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.placeholder {
+  border: white 1px dashed;
+  background-color: rgba(0, 0, 0, 0);
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.emptySectionHiddenLesson {
+  background: none;
+  border: none;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.placeholder-column {
+  background-color: white;
+  width: var(--column-width);
+  border: none;
+  margin-right: 20px;
+  padding: 5px;
+}
+
+.heading {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 900px;
+}
+
+select {
+  height: 50px;
+	font-size: 18px;
+  width: 300px;
+}

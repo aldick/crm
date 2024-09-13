@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	Добавление товаров
+{% endblock title %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_list.css' %}">
+	<link rel="stylesheet" href="{% static 'css/orders_detail.css' %}">
+{% endblock link %}
+
+{% block body %}
+	<div class="info">
+		<div class="heading">
+			{% if "create" in request.META.HTTP_REFERER %}
+			<button onclick="window.location='{% url 'orders_list' %}'">←</button>
+			{% else %}
+			<button onclick="history.back()">←</button> 
+			{% endif %}
+
+			<h1>Заказ #{{order.id}}</h1>
+
+			<button class="update">Изменить</button>
+			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>
+		</div>
+		<p>Клиент: +<a href="{% url 'clients_detail' order.phone_number %}"> {{order.phone_number}} </a></p>
+		<p>Адрес: {{order.address}}</p>
+		<p>Дата заказа: {{order.created_at|date:"j.m.Y Время: H:i" }}</p>
+		<p>Тип оплаты: {{order.get_type_of_payment_display}}</p>
+		<p>Тип заказа: {{order.get_type_of_order_display}}</p>
+		<p>Этап заказа: {{order.get_stage_display}}</p>
+
+		<h2>Добавить продукт</h2>
+		{% if error %}
+			<div class="error">
+				Невозможно добавить продукт в заказ, потому что на складе нет достаточного количество товара
+			</div>
+		{% endif %}
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Добавить</button>
+		</form>
+	</div>
+
+	<div class="items">
+		<table>
+			<tr>
+				<th>Изображение</th>
+				<th>ID</th>
+				<th>Имя</th>
+				<th>Стоимость</th>
+				<th>Количество</th>
+				<th>Сумма</th>
+				<th>Удалить?</th>
+			</tr>
+			{% for product in order_items %}
+				{% if forloop.counter0|divisibleby:2 %}
+					<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="white">
+						<td><img src="{{ product.product.image.url }}" alt=""></td>
+						<td>{{product.product.id}}</td>
+						<td>{{product.product.name}}</td>
+						<td>{{product.product.sell_price}} ₸</td>
+						<td>{{product.amount}}</td>
+						<td>{{product.get_cost}} ₸</td>
+						<td><a class="" href="{% url 'orders_item_delete' product.id %}">х</a></td>
+					</tr>
+				{% else %}
+					<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="gray">
+						<td><img src="{{ product.product.image.url }}" alt=""></td>
+						<td>{{product.product.id}}</td>
+						<td>{{product.product.name}}</td>
+						<td>{{product.product.sell_price}} ₸</td>
+						<td>{{product.amount}}</td>
+						<td>{{product.get_cost}} ₸</td>
+						<td><a class="" href="{% url 'orders_item_delete' product.id %}">х</a></td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>{{order.get_total_cost}} ₸</th>
+				<th></th>
+			</tr>
+		</table>
+	</div>
+{% endblock body %}

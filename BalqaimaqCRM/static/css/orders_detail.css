@@ -1,0 +1,58 @@
+.main {
+	display: flex;
+}
+
+.heading {
+	display: flex;	
+}
+
+.heading > button {
+	margin-right: 50px;
+}
+
+h1 {
+	margin-right: 50px;
+}
+
+.heading > button > a {
+	color: white;
+	font-size: 22px;
+}
+
+td > a {
+	background-color: red;
+	/* width: 30px; */
+	color: white;
+	padding: 8px;
+	margin-left: 30%;
+}
+
+.info {
+	margin-right: auto;
+}
+
+.info,
+form > p > label,
+form > p > input,
+form > p > select {
+	font-size: 24px;
+}
+
+form > p > input {
+	width: 100px;
+}
+
+h2 {
+	color: #ff9900;
+	margin-top: 50px;
+}
+
+.error {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: red;
+	padding: 15px;
+	color: white;
+	width: 450px;
+	font-size: 22px;
+}

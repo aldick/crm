@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/orders_create.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Создание заказа
+{% endblock title %}
+
+{% block body %}
+	<form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Создать</button>
+	</form>
+{% endblock body %}

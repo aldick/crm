@@ -24,7 +24,7 @@
 			{% else %}
 				<ul class="search-results">
 						{% for client in clients %}
-							<li><a href="{% url 'clients_detail' client.id %}">{{ client.name }}, {{ client.phone_number }}</a></li>
+							<li><a href="{% url 'orders_create' client.phone_number %}">{{ client.name }}, +{{ client.phone_number }}</a></li>
 						{% endfor %}
 				</ul>
 			{% endif %}

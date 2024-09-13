@@ -5,12 +5,12 @@
 	<link rel="stylesheet" href="{% static 'css/clients_create.css' %}">
 {% endblock link %}
 
-{% block title %}Изменение клиента #{{ client.id }}{% endblock title %}
+{% block title %}Изменение клиента {{ client.phone_number }}{% endblock title %}
 
 {% block body %}
-	<button class="back" onclick="window.location='{% url 'clients_list' %}'"><-</button>
+	<button class="back" onclick="history.back()">←</button>
 	<div class="center">
-		<h1>Изменение клиента #{{ client.id }}</h1>
+		<h1>Изменение клиента {{ client.phone_number }}</h1>
 		<form method="post">
 			{% csrf_token %}
 
