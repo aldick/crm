@@ -4,8 +4,8 @@ from .models import Client
 
 
 class ClientLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label="Номер телефона")
+    password = forms.CharField(label="Пароль", widget=forms.PasswordInput)
 
 class ClientCreateForm(forms.ModelForm):
     class Meta:

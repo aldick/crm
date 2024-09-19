@@ -1,13 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/clients_create.css' %}">
+{% endblock link %}
 
 {% block title %}Log-in{% endblock title %}
 
 {% block body %}
-  <h1>Log-in</h1>
-  <p>Please, use the following form to log-in:</p>
-  <form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <p><input type="submit" value="Log in"></p>
-  </form>
+  <div class="center">
+    <h1>Войти в систему</h1>
+    <form method="post">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <button type="submit" value="Log in">Войти</button>
+    </form>
+  </div>
 {% endblock body %}
