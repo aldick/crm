@@ -15,13 +15,13 @@ def orders_list_view(request):
         end = start + datetime.timedelta(days=1)
     elif date == "yesterday":
         start = datetime.date.today() - datetime.timedelta(days=1)
-        end = start + datetime.timedelta(days=1)
+        end = datetime.date.today()
     elif date == "week":
         start = datetime.date.today() - datetime.timedelta(days=7)
-        end = start + datetime.timedelta(days=8)
+        end = datetime.date.today() + datetime.timedelta(days=1)
     elif date == "month":
         start = datetime.date.today() - datetime.timedelta(days=30)
-        end = start + datetime.timedelta(days=31)
+        end = datetime.date.today() + datetime.timedelta(days=1)
     orders_stage1 = Order.objects.filter(stage=1).filter(created_at__gt=start).filter(created_at__lt=end)
     orders_stage2 = Order.objects.filter(stage=2).filter(created_at__gt=start).filter(created_at__lt=end)
     orders_stage3 = Order.objects.filter(stage=3).filter(created_at__gt=start).filter(created_at__lt=end)
@@ -91,7 +91,8 @@ def orders_detail_view(request, order_id):
                     
             product = Product.objects.get(id=form.product_id)
             product.amount -= form.amount
-            if product.amount >= 0:    
+            if product.amount >= 0:
+                form.order_id = order_id 
                 form.save()
                 product.save()
                 url = resolve_url("orders_detail", order_id)

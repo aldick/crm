@@ -27,6 +27,7 @@
 				<option value="today">Сегодня</option>
 				<option value="yesterday">Вчера</option>
 				<option value="week">На этой неделе</option>
+				<option value="month">В этом месяце</option>
 			</select>
 		</div>
 
@@ -44,7 +45,10 @@
 									Номер телефона: {{order.phone_number}}
 								</a>
 								<p class="board-item-content-text created_at">
-									Дата заказа: {{order.created_at.time}}
+									Дата заказа: {{order.created_at|date:"j.m.Y"}}
+								</p>
+								<p class="board-item-content-text address">
+									Время: {{order.created_at|date:"H:i"}}
 								</p>
 								<p class="board-item-content-text address">
 									Адрес: {{order.address}}
@@ -71,7 +75,10 @@
 									Номер телефона: {{order.phone_number}}
 								</a>
 								<p class="board-item-content-text created_at">
-									Дата заказа: {{order.created_at.time}}
+									Дата заказа: {{order.created_at|date:"j.m.Y"}}
+								</p>
+								<p class="board-item-content-text address">
+									Время: {{order.created_at|date:"H:i"}}
 								</p>
 								<p class="board-item-content-text address">
 									Адрес: {{order.address}}
@@ -98,7 +105,10 @@
 									Номер телефона: {{order.phone_number}}
 								</a>
 								<p class="board-item-content-text created_at">
-									Дата заказа: {{order.created_at.time}}
+									Дата заказа: {{order.created_at|date:"j.m.Y"}}
+								</p>
+								<p class="board-item-content-text address">
+									Время: {{order.created_at|date:"H:i"}}
 								</p>
 								<p class="board-item-content-text address">
 									Адрес: {{order.address}}
@@ -126,7 +136,10 @@
 									Номер телефона: {{order.phone_number}}
 								</a>
 								<p class="board-item-content-text created_at">
-									Дата заказа: {{order.created_at.time}}
+									Дата заказа: {{order.created_at|date:"j.m.Y"}}
+								</p>
+								<p class="board-item-content-text address">
+									Время: {{order.created_at|date:"H:i"}}
 								</p>
 								<p class="board-item-content-text address">
 									Адрес: {{order.address}}

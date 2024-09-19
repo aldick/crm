@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 	<title>{% block title %}{% endblock title %}</title>
 
@@ -21,7 +21,16 @@
 			<li class="header-item"><a {% if section == "orders" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_list' %}">Заказы</a></li>
 			<li class="header-item"><a {% if section == "clients" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'clients_list' %}">Клиенты</a></li>
 			<li class="header-item"><a {% if section == "storage" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'products_list' %}">Склад</a></li>
-			<li class="header-item"><a {% if section == "dashboard" %}class="selected"{% else %}class="not-selected"{% endif %} href="#">Аналитика</a></li>
+			{% comment %} <li class="header-item"><a {% if section == "analytics" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_analytics' %}">Аналитика</a></li> {% endcomment %}
+			<span class="header-user">
+				<img class="header-user-img" src="../../static/img/user-logo.jpg"> 
+				{% if request.user.is_authenticated %}
+					<a href="{% url 'clients_detail' request.user.username %}">{{ request.user.username }}</a>
+				 	<a href="{% url "clients_logout" %}">Выйти</a>
+				{% else %}
+				 	<a href="{% url "clients_login" %}">Войти</a>
+				{% endif %}
+			</span>
 		</ul>
 	</header>
 

@@ -2,6 +2,11 @@ from django import forms
 
 from .models import Client
 
+
+class ClientLoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
 class ClientCreateForm(forms.ModelForm):
     class Meta:
         model = Client
@@ -27,7 +32,7 @@ class ClientCreateForm(forms.ModelForm):
 class ClientUpdateForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = "phone_number", "name", "address"
+        fields = "name", "address"
         
     def clean_phone_number(self):
         phone_number = self.cleaned_data["phone_number"]

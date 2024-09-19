@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-	let select = document.getElementById('hui')
 	let url = window.location.href
 	let position = url.search("date")
 	let date = url[position+5]
@@ -13,6 +12,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			break;
 		case 'w':
 			document.getElementById("select").selectedIndex = "2";
+			break;
+		case 'm':
+			document.getElementById("select").selectedIndex = "3";
 			break;
 	}
 
