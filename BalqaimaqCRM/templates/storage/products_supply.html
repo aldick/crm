@@ -2,20 +2,22 @@
 {% load static %}
 
 {% block link %}
-	<link rel="stylesheet" href="{% static 'css/products_update.css' %}">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
 {% endblock link %}
 
 
 {% block body %}
 	<button onclick="history.back()" class="back">←</button>
 	
-	<h1>Добавление продукта в склад</h1>
+	<div class="center">
+		<form action="" method="post">
+			<h1>Добавление продукта в склад</h1>
+			{% csrf_token %}
 
-	<form action="" method="post">
-		{% csrf_token %}
+			{{ form.as_table }}
 
-		{{ form.as_p }}
-
-		<button type="submit">Добавить</button>
-	</form>
+			<button type="submit">Добавить</button>
+		</form>
+	</div>
 {% endblock body %}

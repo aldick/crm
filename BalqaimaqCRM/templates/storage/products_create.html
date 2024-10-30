@@ -21,7 +21,7 @@
 		<div class="detail">
 			<img src="../../static/img/no_image.jpg" class="detail-image">
 			<div class="detail-text">
-				<form method="post">
+				<form method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 			
 					{{ form.as_p }}

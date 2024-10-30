@@ -108,12 +108,10 @@ def clients_select_view(request, phone_number=None):
     clients = Client.objects.filter(phone_number="1")
     if 'phone_number' in request.GET:
         q = request.GET['phone_number']
-        print(q)
         if q[0] == "+":
             q = q.replace("+", '', 1)
         elif q[0] == "8":
             q = q.replace("8", '7', 1)
-        print(q)
         if len(q) == 11:
             multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q)) 
             clients = Client.objects.filter(multiple_q).filter(is_active=True)
@@ -141,7 +139,7 @@ def clients_login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    url = resolve_url("clients_detail", user.client.phone_number)
+                    url = resolve_url("clients_list")
                     return redirect(url)
                 else:
                     return HttpResponse('Disabled account')

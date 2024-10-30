@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block link %}
-	<link rel="stylesheet" href="{% static 'css/clients_create.css' %}">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/form.css' %}">
 {% endblock link %}
 
 {% block title %}Новый клиент{% endblock title %}
@@ -10,11 +11,11 @@
 {% block body %}
 	<button class="back" onclick="history.back()">←</button>
 	<div class="center">
-		<h1>Создание нового клиента</h1>
 		<form method="post">
+			<h1>Создание нового клиента</h1>
 			{% csrf_token %}
 
-			{{ form.as_p }}
+			{{ form.as_table }}
 			<button type="submit">Создать</button>
 		</form>
 	</div>

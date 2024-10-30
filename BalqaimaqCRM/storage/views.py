@@ -30,8 +30,7 @@ def products_detail_view(request, pk):
     
 def products_create_view(request):
     if request.method == "POST":
-        # FIXME решить проблему с загрузкой картинок
-        form = ProductForm(request.POST, files=request.FILES)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             url = resolve_url("products_list")

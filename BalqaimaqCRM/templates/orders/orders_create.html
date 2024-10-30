@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block link %}
-	<link rel="stylesheet" href="{% static 'css/orders_create.css' %}">
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/form.css' %}">
 {% endblock link %}
 
 {% block title %}
@@ -10,9 +11,12 @@
 {% endblock title %}
 
 {% block body %}
-	<form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Создать</button>
-	</form>
+	<div class="center">
+		<form method="post">
+			<h1>Создание заказа</h1>
+			{% csrf_token %}
+			{{ form.as_table }}
+			<button type="submit">Создать</button>
+		</form>
+	</div>
 {% endblock body %}

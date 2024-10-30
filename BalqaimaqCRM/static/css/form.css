@@ -1,0 +1,45 @@
+h1 {
+	color: white;
+	background-color: #ff9900;
+	padding-left: 10%;
+	padding-right: 10%;
+	padding-top: 7%;
+	padding-bottom: 7%;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	background-color: #f0f0f0;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 30px;
+}
+
+form > label {
+	width: 90%;
+	font-size: 14px;
+	margin-top: 20px;
+}
+
+form > input,
+form > select  {
+	width: 90%;
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+button {
+	width: 70%;
+	border: 1px solid #ff9900;
+	border-radius: 30px;
+	background-color: #ff9900;
+}
+
+.back {
+	position: absolute;
+	left: 50px;
+	top: 160px;
+	width: 100px;
+	border: none;
+}
