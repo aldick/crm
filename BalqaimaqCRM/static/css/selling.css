@@ -1,0 +1,18 @@
+.heading {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+h2 {
+	margin-right: auto;
+}
+
+select {
+	height: 30px;
+	font-size: 18px;
+	width: 300px;
+}
+
+.chart {
+	height: 500px;
+}

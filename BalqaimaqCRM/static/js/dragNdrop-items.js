@@ -86,6 +86,7 @@
       movingElement.onmouseup = null;
       return;
     }
+
     console.log(
       "We move",
       movingElement.getAttribute('class').split(" ")[1],
@@ -119,8 +120,11 @@
     movingElement.onmouseup = null;
     movingElement = null;
 
+
     // Process empty columns without items
     processEmptySections();
+
+
   };
 
   const onMouseDown = (event) => {

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	Аналитика продаж
+{% endblock title %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/selling.css' %}">
+{% endblock link %}
+
+{% block body %}
+	<div class="heading">
+		<h2>Общая сумма продаж: <span id="total-sum"></span></h2>
+
+		<select id="select" name="select">
+			<option value="cw">На этой неделе</option>
+			<option value="pw">На прошлой неделе</option>
+			<option value="cm">В этом месяце</option>
+			<option value="pm">В прошлом месяце</option>
+		</select>
+	</div>
+
+	<div class="chart">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="{% static 'js/selling.js' %}"></script>
+{% endblock body %}

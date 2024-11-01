@@ -15,13 +15,15 @@ def clients_list_order_view(request, slug):
 		"clients": clients
 	})
 
+#TODO добавить пагинацию и поиск пользователя
 def clients_list_view(request):
     clients = Client.objects.filter(is_active=True)
     return render(request, 'clients/clients_list.html', {
         "section": "clients",
 		"clients": clients
 	})
-    
+
+#TODO добавить переход на WhatsApp по кнопке
 def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
@@ -35,8 +37,8 @@ def clients_detail_view(request, pk):
         "total_sum": total_sum
     })
     
+#TODO убрать создание пользователя django
 def clients_create_view(request, slug=None):
-    
     if request.method == "POST":    
         form = ClientCreateForm(request.POST)
         if form.is_valid():
@@ -103,6 +105,7 @@ def clients_delete_view(request, pk):
         "client": client
     })
     
+#TODO доработать выбор пользователя
 def clients_select_view(request, phone_number=None):
     form = ClientSelectForm()
     clients = Client.objects.filter(phone_number="1")

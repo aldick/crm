@@ -23,7 +23,7 @@ class Order(models.Model):
     type_of_payment = models.CharField(verbose_name="Тип оплаты", choices=TYPE_OF_PAYMENTS, max_length=20)
     type_of_order = models.CharField(verbose_name="Тип заказа", choices=TYPE_OF_ORDERS, max_length=20)
     review = models.TextField(verbose_name="Отзыв клиента", max_length=200, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:

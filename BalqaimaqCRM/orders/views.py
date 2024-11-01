@@ -7,6 +7,7 @@ from clients.models import Client
 from storage.models import Product
 from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm
 
+#TODO доработать работу drag'n'drop
 def orders_list_view(request):
     # TODO доработать работу с датами
     date = request.GET.get("date", "today")

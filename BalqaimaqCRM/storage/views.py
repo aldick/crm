@@ -87,7 +87,7 @@ def products_delete_view(request, pk):
     
     if request.method == "POST":
         product.available = False
-        product.save()
+        product.delete()
         return redirect('products_list')
     return render(request, "storage/products_delete.html", {
         'section': "storage",

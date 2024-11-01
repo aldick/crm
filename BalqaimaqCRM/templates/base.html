@@ -21,7 +21,20 @@
 			<li class="header-item"><a {% if section == "orders" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_list' %}">Заказы</a></li>
 			<li class="header-item"><a {% if section == "clients" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'clients_list' %}">Клиенты</a></li>
 			<li class="header-item"><a {% if section == "storage" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'products_list' %}">Склад</a></li>
-			{% comment %} <li class="header-item"><a {% if section == "analytics" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_analytics' %}">Аналитика</a></li> {% endcomment %}
+
+			<li class="header-item">
+				<div class="dropdown">
+					<a {% if section == "analytics" %}class="dropbtn selected"{% else %}class="dropbtn not-selected"{% endif %} href="#">
+						Аналитика 🠇
+					</a>
+					<div class="dropdown-content">
+						<a href="{% url 'analytics_selling' %}">Аналитика продаж</a>
+						<a href="{% url 'analytics_products' %}">Аналитика товаров</a>
+						<a href="#">Аналитика рабочих</a>
+					</div>
+				</div>
+			</li>
+
 			<span class="header-user">
 				<img class="header-user-img" src="../../static/img/user-logo.jpg"> 
 				{% if request.user.is_authenticated %}

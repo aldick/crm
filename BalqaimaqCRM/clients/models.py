@@ -20,3 +20,5 @@ class Client(models.Model):
     def __str__(self):
         return self.phone_number
     
+#TODO доработать модель работника
+    
