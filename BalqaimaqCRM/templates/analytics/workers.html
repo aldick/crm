@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	Аналитика рабочих
+{% endblock title %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/selling.css' %}">
+	<link rel="stylesheet" href="{% static 'css/table.css' %}">
+{% endblock link %}
+
+{% block body %}
+	<div class="heading">
+		<h2>Аналитика рабочих</h2>
+		<select id="select" name="select">
+			<option value="cw">На этой неделе</option>
+			<option value="pw">На прошлой неделе</option>
+			<option value="cm">В этом месяце</option>
+			<option value="pm">В прошлом месяце</option>
+		</select>
+	</div>
+
+	<table>
+		<tr>
+			<th>Имя</th>
+			<th>Номер телефона</th>
+			<th>Количество товара</th>
+			<th>Зароботная плата</th>
+		</tr>
+		{% for worker in workers %}
+			{% if forloop.counter0|divisibleby:2 %}
+				<tr class="white">
+					<td>{{ worker.name }}</td>
+					<td>+{{ worker.phone_number }}</td>
+					<td>
+						{% for work, products in supplies.items %}
+							{% if work == worker.phone_number %}
+								{% if not products %}
+									<p>Ничего 0</p>
+								{% else %}
+									{% for product, amount in products.items %}
+										{{ product }}: {{ amount }} кг <br>
+									{% endfor %}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					</td>
+					<td></td>
+				</tr>
+			{% else %}
+				<tr class="gray">
+					<td>{{ worker.name }}</td>
+					<td>+{{ worker.phone_number }}</td>
+					<td>
+						{% for work, products in supplies.items %}
+							{% if work == worker.phone_number %}
+								{% if not products %}
+									<p>Ничего 0</p>
+								{% else %}
+									{% for product, amount in products.items %}
+										{{ product }}: {{ amount }} кг <br>
+									{% endfor %}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					</td>
+					<td></td>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</table>
+
+	<script src="{% static 'js/workers.js' %}"></script>
+{% endblock body %}

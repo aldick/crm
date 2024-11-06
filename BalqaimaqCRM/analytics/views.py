@@ -5,14 +5,40 @@ from django.http import JsonResponse
 
 from orders.models import Order, OrderItem
 from storage.models import Product
+from clients.models import Worker
 
-
+#TODO добавить круговую диаграмму для аналитика типа оплаты и заказа
 def selling_view(request):
     return render(request, "analytics/selling.html", {
 		"section": "analytics"
 	})
 
-def _get_orders(date):
+def products_view(request):
+    return render(request, "analytics/products.html", {
+        "section": "analytics"
+    })
+    
+def workers_view(request):
+    date = request.GET.get("date", "cw")
+    print(date)
+    days, start, end = _get_days(date)
+    
+    workers = Worker.objects.filter(is_active=True)
+    supplies = {}
+    for worker in workers:
+        supplies[worker.phone_number] = {}
+        for supply in worker.supplies.filter(created_at__gt=start).filter(created_at__lt=end):
+            try:
+                supplies[worker.phone_number][supply.product] += supply.amount
+            except KeyError:
+                supplies[worker.phone_number][supply.product] = supply.amount
+    return render(request, "analytics/workers.html", {
+        "workers": workers,
+        "supplies": supplies,
+        "section": "analytics"
+    })
+
+def _get_days(date):
     start = None
     end = None
     days = None
@@ -33,13 +59,13 @@ def _get_orders(date):
             days = monthrange(current_year, month)[1]
             start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) - datetime.timedelta(days) + datetime.timedelta(1)
     end = start + datetime.timedelta(days)
-            
-    orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
-    return orders, days, start, end
+    print(days, start, end)  
+    return days, start, end
     
 def get_selling(request, date):
     orders_dict = {'days': {}}
-    orders, days, start, end = _get_orders(date)
+    days, start, end = _get_days(date)
+    orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
     total_sum = 0
     
     for i in range(1, days+1):
@@ -47,25 +73,22 @@ def get_selling(request, date):
         
     if date[1] == 'w':         
         for order in orders:
-        	total_sum += order.get_total_cost()
-        	orders_dict["days"][order.created_at.weekday()] += order.get_total_cost()
+            print(order.created_at.weekday())
+            total_sum += order.get_total_cost()
+            orders_dict["days"][order.created_at.weekday()+1] += order.get_total_cost()
     elif date[1] == 'm':
         for order in orders:
             total_sum += order.get_total_cost()
             orders_dict["days"][order.created_at.day] = order.get_total_cost()
          
     orders_dict["total_sum"] = total_sum
-         
+    print(orders_dict)
     return JsonResponse(orders_dict)
-    
-def products_view(request):
-    return render(request, "analytics/products.html", {
-        "section": "analytics"
-    })
     
 def get_products(request, date):
     products_list = {}
-    orders, days, start, end = _get_orders(date)
+    days, start, end = _get_days(date)
+    orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
     
     products = Product.objects.all()
     for product in products:

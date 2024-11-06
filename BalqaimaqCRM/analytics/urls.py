@@ -7,4 +7,7 @@ urlpatterns = [
 	
 	path('get-products/<slug:date>', views.get_products, name="get_products"),	
 	path('products/', views.products_view, name="analytics_products"),
+ 
+	# path('get-products/<slug:date>', views.get_products, name="get_products"),	
+	path('workers/', views.workers_view, name="analytics_workers"),
 ]

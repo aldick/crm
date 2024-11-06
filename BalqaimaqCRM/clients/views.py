@@ -16,6 +16,7 @@ def clients_list_order_view(request, slug):
 	})
 
 #TODO добавить пагинацию и поиск пользователя
+#TODO добавить общу№ сумму заказов
 def clients_list_view(request):
     clients = Client.objects.filter(is_active=True)
     return render(request, 'clients/clients_list.html', {

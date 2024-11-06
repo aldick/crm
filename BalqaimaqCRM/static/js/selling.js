@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		createChart(JsonData, 'bar', date[1]);
 		total_sum = document.getElementById('total-sum');
 		total_sum.innerHTML = JsonData.total_sum;
-		// console.log(date[1])
 	});	
 
 	document.getElementById('select').addEventListener('change', function() {

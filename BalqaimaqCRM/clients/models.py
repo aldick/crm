@@ -4,9 +4,6 @@ from django.contrib.auth.models import User
 
 
 class Client(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                on_delete=models.CASCADE,
-                                related_name="client")
     phone_number = models.CharField(verbose_name="Номер телефона", max_length=15, unique=True, primary_key=True)
     password = models.CharField(verbose_name="Пароль", max_length=100, default="12345678")
     name = models.CharField(verbose_name="Имя", max_length=100)
@@ -20,5 +17,5 @@ class Client(models.Model):
     def __str__(self):
         return self.phone_number
     
-#TODO доработать модель работника
-    
+class Worker(Client):
+    pass

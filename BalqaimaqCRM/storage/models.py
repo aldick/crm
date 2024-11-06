@@ -1,7 +1,9 @@
+from django.utils import timezone
 from django.db import models
 from django.urls import reverse
+import datetime
 
-from clients.models import Client
+from clients.models import Client, Worker
 
 
 class Product(models.Model):
@@ -11,8 +13,8 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Себестоимость")
     description = models.TextField(verbose_name="Описание")
     image = models.ImageField(upload_to="products/", verbose_name="Изображение")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     available = models.BooleanField(default=True)
     
     def __str__(self):
@@ -26,9 +28,10 @@ class Supply(models.Model):
                                 related_name="supplies",
                                 on_delete=models.CASCADE,
                                 verbose_name="Продукт")
-    worker = models.ForeignKey(Client,
+    worker = models.ForeignKey(Worker,
                                related_name="supplies",
                                on_delete=models.CASCADE,
                                verbose_name="Рабочий")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество")
+    created_at = models.DateTimeField(auto_now_add=True)
     

@@ -6,11 +6,12 @@ from .models import Order, OrderItem
 from clients.models import Client
 from storage.models import Product
 from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm
+from analytics.views import _get_days
 
 #TODO доработать работу drag'n'drop
 def orders_list_view(request):
-    # TODO доработать работу с датами
     date = request.GET.get("date", "today")
+    # TODO доработать работу с датамиw
     if date == "today": 
         start = datetime.date.today()
         end = start + datetime.timedelta(days=1)
@@ -42,7 +43,8 @@ def orders_list_view(request):
         "orders_stage3_price": orders_stage3_price,
         "orders_stage4_price": orders_stage4_price,
 	})
-    
+
+#TODO создать акции пятницы и комбо
 def orders_create_view(request, phone_number):
     if request.method == "POST":
         form = OrderCreateForm(data=request.POST)
