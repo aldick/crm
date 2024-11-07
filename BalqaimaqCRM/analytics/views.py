@@ -7,7 +7,6 @@ from orders.models import Order, OrderItem
 from storage.models import Product
 from clients.models import Worker
 
-#TODO добавить круговую диаграмму для аналитика типа оплаты и заказа
 def selling_view(request):
     return render(request, "analytics/selling.html", {
 		"section": "analytics"
@@ -101,3 +100,26 @@ def get_products(request, date):
             print(item.order)
     
     return JsonResponse(products_list)
+
+def get_types_of_orders(request, date):
+    types_of_orders = {}
+    days, start, end = _get_days(date)
+    orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
+    for order in orders:
+        try:
+            types_of_orders[order.TYPE_OF_ORDERS[order.type_of_order]] += 1
+        except KeyError:
+            types_of_orders[order.TYPE_OF_ORDERS[order.type_of_order]] = 1
+    return JsonResponse(types_of_orders)
+
+def get_types_of_payments(request, date):
+    types_of_payments = {}
+    days, start, end = _get_days(date)
+    orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
+    for order in orders:
+        try:
+            types_of_payments[order.TYPE_OF_PAYMENTS[order.type_of_payment]] += 1
+        except KeyError:
+            types_of_payments[order.TYPE_OF_PAYMENTS[order.type_of_payment]] = 1
+    return JsonResponse(types_of_payments)
+    

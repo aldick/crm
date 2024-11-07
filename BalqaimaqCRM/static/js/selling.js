@@ -37,6 +37,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		total_sum.innerHTML = JsonData.total_sum;
 	});	
 
+	fetch(`../get-types-of-orders/${date}`, options)
+	.then(function(response){
+		if(response.status == 200){
+			return response.json();
+		}
+	})
+	.then(function(data){ 
+		JsonData = data;
+		console.log(data)
+		createPieChart(document.getElementById('myChart2'), data);
+	});	
+
+	fetch(`../get-types-of-payments/${date}`, options)
+	.then(function(response){
+		if(response.status == 200){
+			return response.json();
+		}
+	})
+	.then(function(data){ 
+		JsonData = data;
+		console.log(data)
+		createPieChart(document.getElementById('myChart3'), data);
+	});	
+
 	document.getElementById('select').addEventListener('change', function() {
 		// console.log('You selected: ', this.value);
 		window.location.href = '?date=' + this.value
@@ -44,7 +68,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 })
 
 function createChart(data, type, date){
-	let ctx = document.getElementById('myChart');
+	let ctx = document.getElementById('myChart1');
 	let labels = []
 	let values = []
 	
@@ -69,7 +93,7 @@ function createChart(data, type, date){
 		  labels: labels, 
 		  
 		  datasets: [{
-			 label: '# of Income',
+			 label: 'Заказов',
 			 
 			 data: values,
 			 
@@ -88,3 +112,38 @@ function createChart(data, type, date){
 	   }
 	});
  }
+
+function createPieChart(ctx, data) {
+	let labels = []
+	let values = []
+	for (var key in data) {
+		labels.push(key)
+		values.push(data[key])
+	}
+
+	ctx = new Chart(ctx, {
+		// Setting the chart's type to the `type` parameter.
+		type: 'pie', 
+		data: {
+		   labels: labels, 
+		   
+		   datasets: [{
+			  label: 'Заказов',
+			  
+			  data: values,
+			  
+			  borderWidth: 1
+		  }]
+		},
+		options: {
+		   scales: {
+			  y: {
+				 beginAtZero: true
+			  }
+		   },
+		   // Making the chart responsive.
+		   responsive: true,
+		   maintainAspectRatio: false,
+		}
+	 });
+}
