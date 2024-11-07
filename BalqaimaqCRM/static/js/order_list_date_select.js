@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	let url = window.location.href
 	let position = url.search("date")
 	let date = url[position+5]
+	if (url[position+6]) {
+		date = url[position+5] + url[position+6]
+	}
+	console.log(date)
 	
 	switch(date) {
 		case 't':
@@ -10,11 +14,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		case 'y':
 			document.getElementById("select").selectedIndex = "1";
 			break;
-		case 'w':
+		case 'cw':
 			document.getElementById("select").selectedIndex = "2";
 			break;
-		case 'm':
+		case 'pw':
 			document.getElementById("select").selectedIndex = "3";
+			break;
+		case 'cm':
+			document.getElementById("select").selectedIndex = "4";
+			break;
+		case 'pm':
+			document.getElementById("select").selectedIndex = "5";
 			break;
 	}
 

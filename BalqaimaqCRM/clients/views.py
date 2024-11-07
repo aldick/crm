@@ -24,7 +24,6 @@ def clients_list_view(request):
 		"clients": clients
 	})
 
-#TODO добавить переход на WhatsApp по кнопке
 def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:

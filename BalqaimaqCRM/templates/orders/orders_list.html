@@ -16,19 +16,14 @@
 	<div class="center">
 		<div class="heading">
 			<button onclick="window.location='{% url 'clients_select' %}'">+ Новый заказ</button>
-			{% comment %} <select id="select" onchange="if (this.value) window.location.href = '?date=' + this.value">
-				<option value="">------</option>
-				<option value="today">Сегодня</option>
-				<option value="yesterday">Вчера</option>
-				<option value="week">На этой неделе</option>
-			</select> {% endcomment %}
 			
-			<!-- TODO доробать количество выбора периода -->
 			<select id="select" name="select">
-				<option value="today">Сегодня</option>
-				<option value="yesterday">Вчера</option>
-				<option value="week">На этой неделе</option>
-				<option value="month">В этом месяце</option>
+				<option value="t">Сегодня</option>
+				<option value="y">Вчера</option>
+				<option value="cw">На этой неделе</option>
+				<option value="pw">На прошлой неделе</option>
+				<option value="cm">В этом месяце</option>
+				<option value="pm">В прошлом месяце</option>
 			</select>
 		</div>
 
