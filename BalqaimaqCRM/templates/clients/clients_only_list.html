@@ -1,0 +1,20 @@
+{% load filters %}
+
+
+{% for client in clients %}
+	{% if forloop.counter0|divisibleby:2 %}
+		<tr onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="white">
+			<td>+{{client.phone_number}}</td>
+			<td>{{client.name}}</td>
+			<td>{{client.address}}</td>
+			<td>{{client.total}}</td>
+		</tr>
+	{% else %}
+		<tr onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="gray">
+			<td>+{{client.phone_number}}</td>
+			<td>{{client.name}}</td>
+			<td>{{client.address}}</td>
+			<td>{{client.total}}</td>
+		</tr>
+	{% endif %}
+{% endfor %}

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, resolve_url, redirect, H
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import ClientCreateForm, ClientUpdateForm, ClientSelectForm, ClientLoginForm
 from .models import Client
@@ -15,13 +16,32 @@ def clients_list_order_view(request, slug):
 		"clients": clients
 	})
 
-#TODO добавить пагинацию и поиск пользователя
 #TODO добавить общу№ сумму заказов
 def clients_list_view(request):
     clients = Client.objects.filter(is_active=True)
+    orders = Order.objects.all()
+    paginator = Paginator(clients, 15)
+    page = request.GET.get('page')
+    clients_only = request.GET.get('clients_only')
+    try:
+        clients = paginator.page(page)
+    except PageNotAnInteger:
+        clients = paginator.page(1)
+    except EmptyPage:
+        if clients_only:
+            return HttpResponse('')
+        clients = paginator.page(paginator.num_pages)
+    
+    if clients_only:
+        return render(request, 'clients/clients_only_list.html',{
+            'section': 'clients',
+            "clients": clients,
+            'orders': orders,
+        })
     return render(request, 'clients/clients_list.html', {
         "section": "clients",
-		"clients": clients
+		"clients": clients,
+        'orders': orders,
 	})
 
 def clients_detail_view(request, pk):
@@ -37,20 +57,16 @@ def clients_detail_view(request, pk):
         "total_sum": total_sum
     })
     
-#TODO убрать создание пользователя django
 def clients_create_view(request, slug=None):
     if request.method == "POST":    
         form = ClientCreateForm(request.POST)
         if form.is_valid():
-            client = form.save(commit=False)
-            user = User.objects.create_user(client.phone_number, f"{client.name}@balqaimaq.kz", "12345678")
-            user.save()
-            client.user = user
-            client.save()
+            form.save()
             
             url = resolve_url("clients_list")
             if slug == "order":
                 return redirect(f'../../../orders/create/?phone_number=%2B{form.cleaned_data["phone_number"][1:]}')
+            return redirect(url)
     elif 'phone_number' in request.GET:
         phone_number = Client.objects.create(phone_number=request.GET.get("phone_number"))
         form = ClientCreateForm(instance=phone_number)
@@ -73,11 +89,6 @@ def clients_update_view(request, pk):
                           data=request.POST)
         if form.is_valid():
             form.save()
-            user = User.objects.get(username=client.user.username)
-            user.username = client.phone_number
-            user.email = f"{client.name}@balqaimaq.kz"
-            user.save()
-            client.save()
             
             url = resolve_url("clients_detail", pk)
             return redirect(url)

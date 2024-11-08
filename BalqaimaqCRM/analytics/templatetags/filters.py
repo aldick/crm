@@ -9,5 +9,9 @@ def get_value_from_dict(dict_data, key):
     """
     if key:
         return dict_data.get(key)
+    
+@register.filter('filter_by_client')
+def filter_by_client(orders, client):
+    return orders.filter(phone_number=client)
 
 

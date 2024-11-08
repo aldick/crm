@@ -115,8 +115,14 @@ def orders_detail_view(request, order_id):
             product.amount -= form.amount
             if product.amount >= 0:
                 form.order_id = order_id 
-                form.save()
                 product.save()
+                
+                order = Order.objects.get(id=order_id)
+                order.phone_number.total += form.product.sell_price * form.amount
+                order.phone_number.save()        
+        
+                form.save()
+                
                 url = resolve_url("orders_detail", order_id)
                 return redirect(url)
             else:
@@ -153,7 +159,16 @@ def orders_delete_view(request, order_id):
 def orders_item_delete_view(request, item_id):
     order_item = OrderItem.objects.get(id=item_id)
     order_id = order_item.order_id
+    product = Product.objects.get(name=order_item.product.name)
+    order = Order.objects.get(id=order_id)
+
     if request.method == "POST":
+        product.amount += order_item.amount
+        product.save()
+        
+        order.phone_number.total -= order_item.product.sell_price * order_item.amount
+        order.phone_number.save() 
+        
         order_item.delete()
         return redirect("orders_detail", order_id)
     return render(request, "orders/orders_delete.html", {
