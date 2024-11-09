@@ -10,13 +10,35 @@ from orders.models import Order
 
 def clients_list_order_view(request, slug):
     clients = Client.objects.filter(is_active=True)
-    clients = clients.order_by(slug)
+    if slug == "total":
+        clients = clients.order_by('-total')
+    else:
+        clients = clients.order_by(slug)
+    orders = Order.objects.all()
+    paginator = Paginator(clients, 14)
+    page = request.GET.get('page')
+    clients_only = request.GET.get('clients_only')
+    try:
+        clients = paginator.page(page)
+    except PageNotAnInteger:
+        clients = paginator.page(1)
+    except EmptyPage:
+        if clients_only:
+            return HttpResponse('')
+        clients = paginator.page(paginator.num_pages)
+    
+    if clients_only:
+        return render(request, 'clients/clients_only_list.html',{
+            'section': 'clients',
+            "clients": clients,
+            'orders': orders,
+        })
     return render(request, 'clients/clients_list.html', {
         "section": "clients",
-		"clients": clients
+		"clients": clients,
+        'orders': orders,
 	})
 
-#TODO добавить общу№ сумму заказов
 def clients_list_view(request):
     clients = Client.objects.filter(is_active=True)
     orders = Order.objects.all()

@@ -7,14 +7,14 @@
 			<td>+{{client.phone_number}}</td>
 			<td>{{client.name}}</td>
 			<td>{{client.address}}</td>
-			<td>{{client.total}}</td>
+			<td>{{client.total}} ₸ </td>
 		</tr>
 	{% else %}
 		<tr onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="gray">
 			<td>+{{client.phone_number}}</td>
 			<td>{{client.name}}</td>
 			<td>{{client.address}}</td>
-			<td>{{client.total}}</td>
+			<td>{{client.total}} ₸ </td>
 		</tr>
 	{% endif %}
 {% endfor %}
