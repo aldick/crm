@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Product, Supply
+from .models import Product, Supply, Combo
 
 
 class ProductForm(forms.ModelForm):
@@ -12,3 +12,8 @@ class SupplyForm(forms.ModelForm):
     class Meta:
         model = Supply
         fields = "product", "worker", "amount"
+        
+class ComboForm(forms.ModelForm):
+    class Meta:
+        model = Combo
+        fields = "name", "price", "discount", "description", "image", "products"

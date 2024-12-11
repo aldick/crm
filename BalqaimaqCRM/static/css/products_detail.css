@@ -27,3 +27,35 @@
 	margin-right: 50px;
 }
 
+.x {
+	position: relative;
+}
+.x:before {
+	position: absolute;
+	content: "";
+	left: 0;
+	top: 50%;
+	right: 0;
+	border-top: 1px solid;
+	border-color: red;
+	
+	-webkit-transform:rotate(-5deg);
+	-moz-transform:rotate(-5deg);
+	-ms-transform:rotate(-5deg);
+	-o-transform:rotate(-5deg);
+	transform:rotate(-5deg);
+}
+
+h2 {
+	margin-top: 50px;
+}
+
+.products {
+	margin-bottom: 20px;
+}
+
+.products, .products > li {
+	margin-left: 20px;
+	list-style-type: disc;
+}
+

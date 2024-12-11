@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_detail.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Комбо: "{{ combo.name }}"
+{% endblock title %}
+	
+
+{% block body %}
+	{% if "update" in request.META.HTTP_REFERER %}
+	<button onclick="window.location='{% url 'products_list' %}'">←</button>
+	{% else %}
+	<button onclick="history.back()">←</button> 
+	{% endif %}
+
+	<div class="center">
+		<div class="detail">
+			<img src="{{ combo.image.url }}" alt="" class="detail-image">
+			<div class="detail-text">
+				<h1 class="detail-name">{{ combo.name }}</h1>
+				<p class="detail-sell-price">Цена при продаже: {{ combo.price }} ₸ <span class="x">{{ combo.discount|add:combo.price }} ₸</span></p>
+				<p class="detail-description">Описание: <br> {{ combo.description|linebreaks }}</p>
+				<div class="products-list">
+					<h2>
+						Продукты в комбо:
+					</h2>
+					<ul class="products">
+					{% for product in products_in_combo %}
+						<li>{{ product.product.name }}: {{ product.amount }} кг</li>
+					{% endfor %}
+					</ul>
+				</div>
+				<button onclick="window.location='{% url 'combo_update' combo.id %}'" class="detail-button">Изменить</button>
+				<button onclick="window.location=''" class="detail-button">Удалить</button>	
+			</div>
+			
+		</div>
+	</div>
+{% endblock body %}

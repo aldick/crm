@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Order, OrderItem
+from .models import Order, OrderItem, OrderComboItem
 
 
 class OrderCreateForm(forms.ModelForm):
@@ -17,6 +17,11 @@ class OrderItemAddForm(forms.ModelForm):
     class Meta:
         model = OrderItem
         fields = 'product', 'amount'
+        
+class OrderComboAddForm(forms.ModelForm):
+    class Meta:
+        model = OrderComboItem
+        fields = 'combo', 'amount'
         
 class OrderSortForm(forms.ModelForm):
     class Meta:

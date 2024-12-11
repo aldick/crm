@@ -6,8 +6,9 @@ from django.http import JsonResponse
 
 from .models import Order, OrderItem
 from clients.models import Client
-from storage.models import Product
-from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm
+from storage.models import Product, Combo, ProductsInCombo
+from orders.models import OrderComboItem
+from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm, OrderComboAddForm
 from analytics.views import _get_days
 
 #TODO доработать работу drag'n'drop
@@ -97,46 +98,125 @@ def orders_update_view(request, order_id):
     
 def orders_detail_view(request, order_id):
     error = False
-    if request.method == "POST":
-        form = OrderItemAddForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            
-            # if order has this item
-            order_items = OrderItem.objects.filter(order_id=order_id)
-            for order_item in order_items:
-                if form.product_id == order_item.product_id:
-                    order_item.amount += form.amount
-                    order_item.save()
-                    url = resolve_url("orders_detail", order_id)
-                    return redirect(url)
-                    
-            product = Product.objects.get(id=form.product_id)
-            product.amount -= form.amount
-            if product.amount >= 0:
-                form.order_id = order_id 
-                product.save()
-                
-                order = Order.objects.get(id=order_id)
-                order.phone_number.total += form.product.sell_price * form.amount
-                order.phone_number.save()        
-        
-                form.save()
-                
-                url = resolve_url("orders_detail", order_id)
-                return redirect(url)
-            else:
-                error = True
-        
     order = Order.objects.get(id=order_id)
     order_items = OrderItem.objects.filter(order_id=order_id)
-    form = OrderItemAddForm()
+    
+    #need to calculate amount of products in each combo
+    order_combos = OrderComboItem.objects.filter(order_id=order_id)
+    products_in_combo = {}
+    for order_combo in order_combos:
+        temp = ProductsInCombo.objects.filter(combo=order_combo.combo.id)
+        products_in_combo[order_combo.combo.name] = {}
+        for product in temp:
+            products_in_combo[order_combo.combo.name][product.product.name] = product.amount
+    
+    products_in_combo_with_amount = {}
+    for order_combo in order_combos:
+        temp = ProductsInCombo.objects.filter(combo=order_combo.combo.id)
+        products_in_combo_with_amount[order_combo.combo.name] = {'amount': order_combo.amount}
+        for product in temp:
+            products_in_combo_with_amount[order_combo.combo.name][product.product.name] = product.amount   
+        
+    if request.method == "POST":
+        order_item_add_form = OrderItemAddForm(request.POST)
+        order_combo_add_form = OrderComboAddForm(request.POST)
+        
+        if order_item_add_form.is_valid():
+            order_item_add_form = order_item_add_form.save(commit=False)
+            
+            product = Product.objects.get(id=order_item_add_form.product_id)
+            product.amount -= order_item_add_form.amount
+            
+            if product.amount >= 0:
+                order_items = OrderItem.objects.filter(order_id=order_id)
+                
+                product.save()
+                    
+                order = Order.objects.get(id=order_id)
+                order.phone_number.total += order_item_add_form.product.sell_price * order_item_add_form.amount
+                order.phone_number.save()
+                
+                product_in_order_flag = False  
+                for order_item in order_items:
+                    if order_item_add_form.product_id == order_item.product_id:
+                        order_item.amount += order_item_add_form.amount
+                        order_item.save()
+                        product_in_order_flag = True
+                
+                if product_in_order_flag == False:
+                    order_item_add_form.order_id = order_id
+                    order_item_add_form.save()
+
+                url = resolve_url("orders_detail", order_id)
+                return redirect(url)
+            
+            else:
+                error = True
+                
+        if order_combo_add_form.is_valid():
+            order_combo_add_form = order_combo_add_form.save(commit=False)
+            
+            # final = {}
+            # for combo, product in products_in_combo_with_amount.items():
+            #     for product_name, product_amount in product.items():
+            #         if product_name != 'amount':
+            #             try:
+            #                 final[product_name] += product_amount * product['amount']
+            #             except KeyError:
+            #                 final[product_name] = product_amount * product['amount']
+            # print(products_in_combo) 
+            
+            combo = Combo.objects.get(name=order_combo_add_form.combo.name)
+            products = ProductsInCombo.objects.filter(combo=combo)
+            for product in products:
+                if product.product.amount - product.amount * order_combo_add_form.amount < 0:
+                    error = True
+                    for product in products:
+                        if product.product.amount - product.amount * order_combo_add_form.amount < 0:
+                            break
+                        else:
+                            product.product.amount += product.amount * order_combo_add_form.amount
+                            product.product.save()
+                    break
+                else:
+                    product.product.amount -= product.amount * order_combo_add_form.amount
+                    product.product.save()
+            
+            combo_in_order_flag = False
+            order_combo_items = OrderComboItem.objects.filter(order=order_id)
+            print(order_combo_items)
+            for order_combo_item in order_combo_items:
+                if order_combo_item.combo.name == combo.name:
+                    order_combo_item.amount += 1
+                    order_combo_item.save()
+                    combo_in_order_flag = True
+                    break
+            
+            order = Order.objects.get(id=order_id)
+            order.phone_number.total += order_combo_add_form.combo.price * order_combo_add_form.amount
+            
+            print(order.phone_number.total, order_combo_add_form.combo.price * order_combo_add_form.amount)
+            order.phone_number.save()
+            
+            order_combo_add_form.order_id = order_id
+            
+            if error == False and combo_in_order_flag==False:
+                order_combo_add_form.save()
+
+    order = Order.objects.get(id=order_id)
+    order_items = OrderItem.objects.filter(order_id=order_id)
+    order_combos = OrderComboItem.objects.filter(order_id=order_id)
+    order_item_add_form = OrderItemAddForm()
+    order_combo_add_form = OrderComboAddForm()
     
     return render(request, "orders/orders_detail.html", {
         "section": "orders",
         "order": order,
         "order_items": order_items,
-        "form": form,
+        'order_combos': order_combos,
+        'products_in_combo': products_in_combo,
+        "order_item_add_form": order_item_add_form,
+        "order_combo_add_form": order_combo_add_form,
         "error": error
     })
     
@@ -174,6 +254,30 @@ def orders_item_delete_view(request, item_id):
     return render(request, "orders/orders_delete.html", {
         "section": "orders",
         "order": order_item 
+    })
+    
+def orders_combo_delete_view(request, combo_id):
+    order_combo = OrderComboItem.objects.get(combo_id=combo_id)
+    order_id = order_combo.order_id
+    print(order_combo.order, order_id)
+    combo = Combo.objects.get(name=order_combo.combo.name)
+    products = ProductsInCombo.objects.filter(combo=combo)
+    order = Order.objects.get(id=order_id)
+    
+    if request.method == "POST":
+        for product in products:
+            product.product.amount += product.amount * order_combo.amount
+            product.product.save()
+            
+        order.phone_number.total -= order_combo.get_cost()
+        order.phone_number.save() 
+        
+        order_combo.delete()
+        return redirect("orders_detail", order_id)
+    
+    return render(request, "orders/orders_delete.html", {
+        "section": "orders",
+        "order": order_combo
     })
     
 def orders_column_update_view(request, order_id, order_stage):

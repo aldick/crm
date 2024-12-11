@@ -14,6 +14,7 @@
 		<button class="supply" onclick="window.location='{% url 'products_supply' %}'">+ Добавить продукцию в склад</button>
 		<button onclick="window.location='{% url 'products_table' %}'" class="table">Таблица</button>
 	</div>
+	<h1 style="color: black;">Список продуктов</h1>
 	<div class="container">
 		<div class="products-list">
 			{% for product in products_list %}
@@ -25,9 +26,32 @@
 					<button onclick="window.location='{{ product.get_absolute_url }}'" class="product-item-button">Подробнее</button>
 				</div>
 			{% endfor %}
-			<div onclick="window.location='{% url 'products_create' %}'" class="product-add">
-				<p>+</p>
-				<p>Новый товар</p>
+			
+			<div class="product-item-add">
+				<div onclick="window.location='{% url 'products_create' %}'" class="product-add">
+					<p>+</p>
+					<p>Новый товар</p>
+				</div> 
+			</div>
+		</div>
+	</div>
+	<h1 style="color: black;">Список комбо</h1>
+	<div class="container">
+		<div class="products-list">
+			{% for combo in combo_list %}
+				<div class="product-item">
+					<img class="product-item-img" src="{{ combo.image.url }}">
+					<p class="product-item-name">{{ combo.name }}</p>
+					<p class="product-item-price">Цена: {{ combo.price }}</p>
+					<button onclick="window.location='{{ combo.get_absolute_url }}'" class="product-item-button">Подробнее</button>
+				</div>
+			{% endfor %}
+
+			<div class="product-item-add">
+				<div onclick="window.location='{% url 'combo_create' %}'" class="product-add">
+					<p>+</p>
+					<p>Новое комбо</p>
+				</div> 
 			</div>
 		</div>
 	</div>

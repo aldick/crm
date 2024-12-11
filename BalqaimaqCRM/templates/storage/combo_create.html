@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/products_update.css' %}">
+	<link rel="stylesheet" href="{% static 'css/products_detail.css' %}">
+{% endblock link %}
+
+{% block title %}
+	Создание нового продукта
+{% endblock title %}
+
+{% block body %}
+	{% if "create" in request.META.HTTP_REFERER %}
+	<button class="back" onclick="window.location='{% url 'products_list' %}'">←</button>
+	{% else %}
+	<button class="back" onclick="history.back()">←</button>
+	{% endif %}
+
+	<div class="center">
+		<div class="detail">
+			<img src="../../static/img/no_image.jpg" class="detail-image">
+			<div class="detail-text">
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+			
+					{{ form.as_p }}
+					<button type="submit">Сохранить</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	
+{% endblock body %}

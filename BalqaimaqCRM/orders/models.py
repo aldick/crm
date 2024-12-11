@@ -1,7 +1,7 @@
 from django.db import models
 
 from clients.models import Client
-from storage.models import Product
+from storage.models import Product, Combo
 
 class Order(models.Model):
     STAGES = {"1": 'Упаковка', 
@@ -33,7 +33,7 @@ class Order(models.Model):
 		]
         
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+        return sum(item.get_cost() for item in self.items.all()) + sum(item.get_cost() for item in self.combos.all())
 
     def __str__(self):
         return f'Order {self.id}'
@@ -53,5 +53,15 @@ class OrderItem(models.Model):
  
     def get_cost(self):
         return round(self.product.sell_price * self.amount)
-	
-	
+    
+class OrderComboItem(models.Model):
+    order = models.ForeignKey(Order,
+							related_name='combos',
+							on_delete=models.CASCADE)
+    combo = models.ForeignKey(Combo, 
+                              related_name="orders", 
+                              on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество", default=1)
+    
+    def get_cost(self):
+        return round(self.combo.price * self.amount)

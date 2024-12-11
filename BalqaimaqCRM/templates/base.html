@@ -38,7 +38,7 @@
 			<span class="header-user">
 				<img class="header-user-img" src="../../static/img/user-logo.jpg"> 
 				{% if request.user.is_authenticated %}
-					<a href="{% url 'clients_detail' request.user.username %}">+{{ request.user.username }}</a>
+					{% comment %} <a href="{% url 'clients_detail' request.user.username %}">+{{ request.user.username }}</a> {% endcomment %}
 				 	<a href="{% url "clients_logout" %}">Выйти</a>
 				{% else %}
 				 	<a href="{% url "clients_login" %}">Войти</a>

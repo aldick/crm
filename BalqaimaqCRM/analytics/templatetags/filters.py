@@ -14,4 +14,8 @@ def get_value_from_dict(dict_data, key):
 def filter_by_client(orders, client):
     return orders.filter(phone_number=client)
 
+@register.filter
+def multiply(value, arg):
+    return value * arg
+
 

@@ -28,14 +28,22 @@
 
 .product-item {
 	width: 23.6%;
+	height: 577.25px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 }
 
+.product-item-add {
+	width: 23.6%;
+	height: 400px;
+	background-color: #ffffff;
+	gap: 10px;
+}
+
 .product-item-img {
-	width: 100%;
-	height: 100%;
+	width: 400px;
+	height: 400px;
 }
 
 .product-item-name {
@@ -57,7 +65,8 @@
 }
 
 .product-add {
-	width: 23.6%;
+	width: 100%;
+	height: 100%;
 	background-color: #ff9900;
 	display: flex;
 	justify-content: center;

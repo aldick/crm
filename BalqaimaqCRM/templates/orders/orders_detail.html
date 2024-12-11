@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filters %}
 
 {% block title %}
 	Добавление товаров
@@ -21,10 +22,10 @@
 
 			<h1>Заказ #{{order.id}}</h1>
 
-			<button class="update">Изменить</button>
+			<button class="update" onclick="window.location='{% url 'orders_update' order.id %}'">Изменить</button>
 			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>
 		</div>
-		<p>Клиент: +<a href="{% url 'clients_detail' order.phone_number %}"> {{order.phone_number}} </a></p>
+		<p>Клиент: <a href="{% url 'clients_detail' order.phone_number %}"> +{{order.phone_number}} </a></p>
 		<p>Адрес: {{order.address}}</p>
 		<p>Дата заказа: {{order.created_at|date:"j.m.Y Время: H:i" }}</p>
 		<p>Тип оплаты: {{order.get_type_of_payment_display}}</p>
@@ -39,7 +40,13 @@
 		{% endif %}
 		<form method="post">
 			{% csrf_token %}
-			{{ form.as_p }}
+			{{ order_item_add_form.as_p }}
+			<button type="submit">Добавить</button>
+		</form>
+		<h2>Добавить комбо</h2>
+		<form method="post">
+			{% csrf_token %}
+			{{ order_combo_add_form.as_p }}
 			<button type="submit">Добавить</button>
 		</form>
 	</div>
@@ -48,10 +55,9 @@
 		<table>
 			<tr>
 				<th>Изображение</th>
-				<th>ID</th>
 				<th>Имя</th>
-				<th>Стоимость</th>
 				<th>Количество</th>
+				<th>Стоимость</th>
 				<th>Сумма</th>
 				<th>Удалить?</th>
 			</tr>
@@ -59,27 +65,91 @@
 				{% if forloop.counter0|divisibleby:2 %}
 					<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="white">
 						<td><img src="{{ product.product.image.url }}" alt=""></td>
-						<td>{{product.product.id}}</td>
 						<td>{{product.product.name}}</td>
+						<td>{{product.amount}} кг</td>
 						<td>{{product.product.sell_price}} ₸</td>
-						<td>{{product.amount}}</td>
 						<td>{{product.get_cost}} ₸</td>
 						<td><a class="" href="{% url 'orders_item_delete' product.id %}">х</a></td>
 					</tr>
 				{% else %}
 					<tr onclick="window.location='{% url 'products_detail' product.id %}'" class="gray">
 						<td><img src="{{ product.product.image.url }}" alt=""></td>
-						<td>{{product.product.id}}</td>
 						<td>{{product.product.name}}</td>
+						<td>{{product.amount}} кг</td>
 						<td>{{product.product.sell_price}} ₸</td>
-						<td>{{product.amount}}</td>
-						<td>{{product.get_cost}} ₸</td>
+						<td>{{product.get_cost}} </td>
 						<td><a class="" href="{% url 'orders_item_delete' product.id %}">х</a></td>
 					</tr>
 				{% endif %}
 			{% endfor %}
+
+			{% if order_combos.count > 0 %}
+				<tr>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			{% endif %}
+
+			{% for combo in order_combos %}
+				{% if forloop.counter0|divisibleby:2 %}
+				<tr class="white">
+					<td>
+						<img src="{{combo.combo.image.url}}" alt=""> <br>
+					</td>
+					<td>
+						<b>{{combo.combo.name}}</b> <br>
+						{% for product in combo.combo.products.all %}
+							{{product.name}} <br>
+						{% endfor %}
+					</td>
+					<td>
+						<br>
+						{% for product in products_in_combo|get_value_from_dict:combo.combo.name %}
+							{% if forloop.counter0 == 2 %}
+								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг x{{combo.amount|floatformat:"0"}}</p>
+							{% else %}
+								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг</p>
+							{% endif %}
+						{% endfor %}
+					</td>
+					<td>{{combo.combo.price}} ₸</td>
+					<td><p>{{ combo.combo.price|multiply:combo.amount|floatformat:"2" }} ₸</p></td>
+					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id %}">х</a></td>
+				</tr>
+				{% else %}
+				<tr class="gray">
+					<td>
+						<img src="{{combo.combo.image.url}}" alt=""> <br>
+					</td>
+					<td>
+						<b>{{combo.combo.name}}</b> <br>
+						{% for product in combo.combo.products.all %}
+							{{product.name}} <br>
+						{% endfor %}
+					</td>
+					<td>
+						<br>
+						{% for product in products_in_combo|get_value_from_dict:combo.combo.name %}
+							{% if forloop.counter0 == 2 %}
+								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг x{{combo.amount|floatformat:"0"}}</p>
+							{% else %}
+								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг</p>
+							{% endif %}
+						{% endfor %}
+					</td>
+					<td>{{combo.combo.price}} ₸</td>
+					<td><p>{{ combo.combo.price|multiply:combo.amount|floatformat:"2" }} ₸</p></td>
+					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id %}">х</a></td>
+				</tr>
+				{% endif %}
+			{% endfor %}
+
 			<tr>
-				<th></th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -88,5 +158,6 @@
 				<th></th>
 			</tr>
 		</table>
+		
 	</div>
 {% endblock body %}
