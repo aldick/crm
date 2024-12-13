@@ -42,7 +42,7 @@
 				<div class="product-item">
 					<img class="product-item-img" src="{{ combo.image.url }}">
 					<p class="product-item-name">{{ combo.name }}</p>
-					<p class="product-item-price">Цена: {{ combo.price }}</p>
+					<p class="product-item-price">Цена: {{ combo.price|floatformat:0 }} ₸ <span class="x">{{ combo.discount|add:combo.price }} ₸</span></p>
 					<button onclick="window.location='{{ combo.get_absolute_url }}'" class="product-item-button">Подробнее</button>
 				</div>
 			{% endfor %}

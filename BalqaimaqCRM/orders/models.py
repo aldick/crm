@@ -65,3 +65,6 @@ class OrderComboItem(models.Model):
     
     def get_cost(self):
         return round(self.combo.price * self.amount)
+    
+    def __str__(self):
+	    return str(self.combo.name)

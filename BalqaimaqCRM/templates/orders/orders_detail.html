@@ -91,7 +91,6 @@
 					<th></th>
 					<th></th>
 					<th></th>
-					<th></th>
 				</tr>
 			{% endif %}
 
@@ -119,7 +118,7 @@
 					</td>
 					<td>{{combo.combo.price}} ₸</td>
 					<td><p>{{ combo.combo.price|multiply:combo.amount|floatformat:"2" }} ₸</p></td>
-					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id %}">х</a></td>
+					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id order.id %}">х</a></td>
 				</tr>
 				{% else %}
 				<tr class="gray">
@@ -144,7 +143,7 @@
 					</td>
 					<td>{{combo.combo.price}} ₸</td>
 					<td><p>{{ combo.combo.price|multiply:combo.amount|floatformat:"2" }} ₸</p></td>
-					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id %}">х</a></td>
+					<td><a class="" href="{% url 'orders_combo_delete' combo.combo.id order.id %}">х</a></td>
 				</tr>
 				{% endif %}
 			{% endfor %}
@@ -153,7 +152,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th></th>
+				<th>Итоговая сумма:</th>
 				<th>{{order.get_total_cost}} ₸</th>
 				<th></th>
 			</tr>

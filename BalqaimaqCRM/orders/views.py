@@ -11,6 +11,29 @@ from orders.models import OrderComboItem
 from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm, OrderComboAddForm
 from analytics.views import _get_days
 
+def _add_samsa_gift(order, products_in_combo):
+    if int(order.get_total_cost()) >= 15000 and "Самса в подарок 1 кг" not in products_in_combo and order.created_at.weekday() == 4:
+        samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
+        gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
+        gift.save()
+    
+    elif int(order.get_total_cost()) >= 10000 and "Самса в подарок 0.5 кг" not in products_in_combo and order.created_at.weekday() == 4:
+        samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
+        gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
+        gift.save()
+            
+    if int(order.get_total_cost()) < 10000 and "Самса в подарок 0.5 кг" in products_in_combo and order.created_at.weekday() == 4:
+        samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
+        gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
+        gift.delete()
+        
+    if int(order.get_total_cost()) < 15000 and "Самса в подарок 1 кг" in products_in_combo and order.created_at.weekday() == 4:
+        samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
+        gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
+        gift.delete()
+        
+        
+
 #TODO доработать работу drag'n'drop
 def orders_list_view(request):
     date = request.GET.get("date", "t")
@@ -64,7 +87,6 @@ def orders_list_view(request):
         "orders_stage4_price": orders_stage4_price,
 	})
 
-#TODO создать акции пятницы и комбо
 def orders_create_view(request, phone_number):
     if request.method == "POST":
         form = OrderCreateForm(data=request.POST)
@@ -115,11 +137,15 @@ def orders_detail_view(request, order_id):
         temp = ProductsInCombo.objects.filter(combo=order_combo.combo.id)
         products_in_combo_with_amount[order_combo.combo.name] = {'amount': order_combo.amount}
         for product in temp:
-            products_in_combo_with_amount[order_combo.combo.name][product.product.name] = product.amount   
+            products_in_combo_with_amount[order_combo.combo.name][product.product.name] = product.amount
+        
+    _add_samsa_gift(order, products_in_combo)
         
     if request.method == "POST":
         order_item_add_form = OrderItemAddForm(request.POST)
         order_combo_add_form = OrderComboAddForm(request.POST)
+        
+        
         
         if order_item_add_form.is_valid():
             order_item_add_form = order_item_add_form.save(commit=False)
@@ -202,6 +228,8 @@ def orders_detail_view(request, order_id):
             
             if error == False and combo_in_order_flag==False:
                 order_combo_add_form.save()
+                
+        _add_samsa_gift(order, products_in_combo)
 
     order = Order.objects.get(id=order_id)
     order_items = OrderItem.objects.filter(order_id=order_id)
@@ -256,8 +284,8 @@ def orders_item_delete_view(request, item_id):
         "order": order_item 
     })
     
-def orders_combo_delete_view(request, combo_id):
-    order_combo = OrderComboItem.objects.get(combo_id=combo_id)
+def orders_combo_delete_view(request, combo_id, order_id):
+    order_combo = OrderComboItem.objects.get(combo_id=combo_id, order_id=order_id)
     order_id = order_combo.order_id
     print(order_combo.order, order_id)
     combo = Combo.objects.get(name=order_combo.combo.name)
