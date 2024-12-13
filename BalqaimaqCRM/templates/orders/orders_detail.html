@@ -102,12 +102,16 @@
 					</td>
 					<td>
 						<b>{{combo.combo.name}}</b> <br>
-						{% for product in combo.combo.products.all %}
-							{{product.name}} <br>
-						{% endfor %}
+						{% if combo.combo.name != "Самса в подарок 1 кг" and combo.combo.name != "Самса в подарок 0.5 кг" %}
+							{% for product in combo.combo.products.all %}
+								{{product.name}} <br>
+							{% endfor %}
+						{% endif %}
 					</td>
 					<td>
+						{% if combo.combo.name != "Самса в подарок 1 кг" and combo.combo.name != "Самса в подарок 0.5 кг" %}
 						<br>
+						{% endif %}
 						{% for product in products_in_combo|get_value_from_dict:combo.combo.name %}
 							{% if forloop.counter0 == 2 %}
 								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг x{{combo.amount|floatformat:"0"}}</p>
@@ -127,12 +131,16 @@
 					</td>
 					<td>
 						<b>{{combo.combo.name}}</b> <br>
-						{% for product in combo.combo.products.all %}
-							{{product.name}} <br>
-						{% endfor %}
+						{% if combo.combo.name != "Самса в подарок 1 кг" and combo.combo.name != "Самса в подарок 0.5 кг" %}
+							{% for product in combo.combo.products.all %}
+								{{product.name}} <br>
+							{% endfor %}
+						{% endif %}
 					</td>
 					<td>
+						{% if combo.combo.name != "Самса в подарок 1 кг" and combo.combo.name != "Самса в подарок 0.5 кг" %}
 						<br>
+						{% endif %}
 						{% for product in products_in_combo|get_value_from_dict:combo.combo.name %}
 							{% if forloop.counter0 == 2 %}
 								<p>{{products_in_combo|get_value_from_dict:combo.combo.name|get_value_from_dict:product}} кг x{{combo.amount|floatformat:"0"}}</p>
