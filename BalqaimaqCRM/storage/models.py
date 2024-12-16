@@ -45,7 +45,7 @@ class ProductsInCombo(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество")
     
     def __str__(self):
-        return f'{self.combo.name}           {self.product.name}'
+        return f'{self.combo.name}     {self.product.name}'
     
     
 class Supply(models.Model):

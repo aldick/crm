@@ -11,26 +11,38 @@ from orders.models import OrderComboItem
 from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm, OrderComboAddForm
 from analytics.views import _get_days
 
+def _remove_samsa_from_storage(amount):
+    samsa = Product.objects.get(name="Самса с говядиной")
+    samsa.amount -= amount
+    if samsa.amount < 0:
+        error = True
+    else:
+        samsa.save()
+
 def _add_samsa_gift(order, products_in_combo):
     if int(order.get_total_cost()) >= 15000 and "Самса в подарок 1 кг" not in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
         gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
         gift.save()
+        _remove_samsa_from_storage(amount=1)
     
     elif int(order.get_total_cost()) >= 10000 and "Самса в подарок 0.5 кг" not in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
         gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
         gift.save()
+        _remove_samsa_from_storage(amount=1)
             
     if int(order.get_total_cost()) < 10000 and "Самса в подарок 0.5 кг" in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
         gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
         gift.delete()
+        _remove_samsa_from_storage(amount=-1)
         
     if int(order.get_total_cost()) < 15000 and "Самса в подарок 1 кг" in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
         gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
         gift.delete()
+        _remove_samsa_from_storage(amount=-1)
         
         
 

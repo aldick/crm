@@ -20,7 +20,7 @@
 			<button onclick="history.back()">←</button> 
 			{% endif %}
 
-			<h1>Заказ #{{order.id}}</h1>
+			<h1 style="font-size: 40px;">Заказ #{{order.id}}</h1>
 
 			<button class="update" onclick="window.location='{% url 'orders_update' order.id %}'">Изменить</button>
 			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>

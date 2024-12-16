@@ -15,7 +15,7 @@
 </head>
 <body>
 	<header>
-		<img class="header-img" src="../../static/img/balqaimaq-logo.png" alt="">
+		<img class="header-img" src="{% static 'img/balqaimaq-logo.png' %}" alt="header-img">
 
 		<ul class="header-list">
 			<li class="header-item"><a {% if section == "orders" %}class="selected"{% else %}class="not-selected"{% endif %} href="{% url 'orders_list' %}">Заказы</a></li>
@@ -36,7 +36,7 @@
 			</li>
 
 			<span class="header-user">
-				<img class="header-user-img" src="../../static/img/user-logo.jpg"> 
+				<img class="header-user-img" src="{% static 'img/user-logo.jpg' %}"> 
 				{% if request.user.is_authenticated %}
 					{% comment %} <a href="{% url 'clients_detail' request.user.username %}">+{{ request.user.username }}</a> {% endcomment %}
 				 	<a href="{% url "clients_logout" %}">Выйти</a>

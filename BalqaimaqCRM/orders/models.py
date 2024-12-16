@@ -17,13 +17,12 @@ class Order(models.Model):
     phone_number = models.ForeignKey(Client,
                                      related_name="orders",
                                      on_delete=models.CASCADE)
-    # name = models.CharField(verbose_name="Имя", max_length=100)
     address = models.CharField(verbose_name="Адрес", max_length=150)
     stage = models.CharField(verbose_name="Этап заказа", choices=STAGES, max_length=20, default="1")
     type_of_payment = models.CharField(verbose_name="Тип оплаты", choices=TYPE_OF_PAYMENTS, max_length=20)
     type_of_order = models.CharField(verbose_name="Тип заказа", choices=TYPE_OF_ORDERS, max_length=20)
     review = models.TextField(verbose_name="Отзыв клиента", max_length=200, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, editable=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
