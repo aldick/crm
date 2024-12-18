@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'clients.apps.ClientsConfig',
     'storage.apps.StorageConfig',
     'orders.apps.OrdersConfig',
-    'analytics'
+    'analytics.apps.AnalyticsConfig',
 ]
 
 MIDDLEWARE = [
