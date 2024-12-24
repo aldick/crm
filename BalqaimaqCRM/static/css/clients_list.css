@@ -45,3 +45,30 @@ th, td {
 .gray {
 	background-color: #e3e3e3;
 }	
+
+.heading {
+	display: flex;
+	width: 100%;
+}
+
+form {
+	display: flex;
+}
+
+form > p > input {
+	height: 36px;
+	margin-bottom: 10px;
+	font-size: 1.5em;
+}
+
+form > p > label {
+	display: none;
+}
+
+form > button {
+	padding: 6px 10px;
+	background: #c3c3c3;
+	font-size: 17px;
+	border: none;
+	cursor: pointer;
+}

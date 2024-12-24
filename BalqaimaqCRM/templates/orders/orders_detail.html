@@ -22,8 +22,6 @@
 
 			<h1 style="font-size: 40px;">Заказ #{{order.id}}</h1>
 
-			<button class="update" onclick="window.location='{% url 'orders_update' order.id %}'">Изменить</button>
-			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>
 		</div>
 		<p>Клиент: <a href="{% url 'clients_detail' order.phone_number %}"> +{{order.phone_number}} </a></p>
 		<p>Адрес: {{order.address}}</p>
@@ -31,6 +29,11 @@
 		<p>Тип оплаты: {{order.get_type_of_payment_display}}</p>
 		<p>Тип заказа: {{order.get_type_of_order_display}}</p>
 		<p>Этап заказа: {{order.get_stage_display}}</p>
+
+		<div style="margin-top: 20px;" class="heading">
+			<button class="update" onclick="window.location='{% url 'orders_update' order.id %}'">Изменить</button>
+			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>
+		</div>
 
 		<h2>Добавить продукт</h2>
 		{% if error %}

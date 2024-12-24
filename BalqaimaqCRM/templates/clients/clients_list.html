@@ -4,6 +4,7 @@
 
 {% block link %}
 	<link rel="stylesheet" href="{% static 'css/clients_list.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock link %}
 
 {% block title %}Список клиентов{% endblock title %}
@@ -12,7 +13,14 @@
 	<h1>Список клиентов</h1>
 
 	<div class="center">
-		<button><a href="{% url 'clients_create' %}">+ Новый клиент</a></button>
+		<div class="heading">
+			<button><a href="{% url 'clients_create' %}">+ Новый клиент</a></button>
+
+			<form method="get">
+				{{ form.as_p }}
+				<button type="submit"><i class="fa fa-search"></i></button>
+			</form>
+		</div>
 
 		<table id="table">
 			<tr>

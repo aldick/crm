@@ -1,3 +1,4 @@
+//TODO добавить больше выбора
 document.addEventListener('DOMContentLoaded', (event) => {
 	let url = window.location.href
 	let position = url.search("date")

@@ -16,7 +16,8 @@ def products_view(request):
     return render(request, "analytics/products.html", {
         "section": "analytics"
     })
-    
+
+#TODO доработать эту страницу
 def workers_view(request):
     date = request.GET.get("date", "cw")
     print(date)

@@ -8,63 +8,59 @@ from .forms import ClientCreateForm, ClientUpdateForm, ClientSelectForm, ClientL
 from .models import Client
 from orders.models import Order
 
-def clients_list_order_view(request, slug):
+def clients_list_order_view(request, slug=None):
+    orders = Order.objects.all()
+    form = ClientSelectForm()
     clients = Client.objects.filter(is_active=True)
     if slug == "total":
         clients = clients.order_by('-total')
+    elif slug == None:
+        clients = clients
     else:
         clients = clients.order_by(slug)
-    orders = Order.objects.all()
-    paginator = Paginator(clients, 14)
-    page = request.GET.get('page')
-    clients_only = request.GET.get('clients_only')
-    try:
-        clients = paginator.page(page)
-    except PageNotAnInteger:
-        clients = paginator.page(1)
-    except EmptyPage:
-        if clients_only:
-            return HttpResponse('')
-        clients = paginator.page(paginator.num_pages)
     
-    if clients_only:
-        return render(request, 'clients/clients_only_list.html',{
-            'section': 'clients',
+    if 'phone_number' in request.GET and request.GET['phone_number'] != '':
+        q = request.GET['phone_number']
+        if q[0] == "+":
+            q = q.replace("+", '', 1)
+        elif q[0] == "8":
+            q = q.replace("8", '7', 1)
+        # multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q)) 
+        clients = Client.objects.filter(phone_number__startswith=q).filter(is_active=True)
+        
+        return render(request, 'clients/clients_list.html', {
+            "section": "clients",
             "clients": clients,
             'orders': orders,
+            'form': form,
         })
-    return render(request, 'clients/clients_list.html', {
-        "section": "clients",
-		"clients": clients,
-        'orders': orders,
-	})
-
-def clients_list_view(request):
-    clients = Client.objects.filter(is_active=True)
-    orders = Order.objects.all()
-    paginator = Paginator(clients, 15)
-    page = request.GET.get('page')
-    clients_only = request.GET.get('clients_only')
-    try:
-        clients = paginator.page(page)
-    except PageNotAnInteger:
-        clients = paginator.page(1)
-    except EmptyPage:
-        if clients_only:
-            return HttpResponse('')
-        clients = paginator.page(paginator.num_pages)
     
-    if clients_only:
-        return render(request, 'clients/clients_only_list.html',{
-            'section': 'clients',
+    else:
+        paginator = Paginator(clients, 14)
+        page = request.GET.get('page')
+        clients_only = request.GET.get('clients_only')
+        try:
+            clients = paginator.page(page)
+        except PageNotAnInteger:
+            clients = paginator.page(1)
+        except EmptyPage:
+            if clients_only:
+                return HttpResponse('')
+            clients = paginator.page(paginator.num_pages)
+            
+        if clients_only:
+            return render(request, 'clients/clients_only_list.html',{
+                'section': 'clients',
+                "clients": clients,
+                'orders': orders,
+                'form': form,
+            })
+        return render(request, 'clients/clients_list.html', {
+            "section": "clients",
             "clients": clients,
             'orders': orders,
+            'form': form,
         })
-    return render(request, 'clients/clients_list.html', {
-        "section": "clients",
-		"clients": clients,
-        'orders': orders,
-	})
 
 def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)

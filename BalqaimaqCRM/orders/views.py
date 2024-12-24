@@ -44,9 +44,6 @@ def _add_samsa_gift(order, products_in_combo):
         gift.delete()
         _remove_samsa_from_storage(amount=-1)
         
-        
-
-#TODO доработать работу drag'n'drop
 def orders_list_view(request):
     date = request.GET.get("date", "t")
     
