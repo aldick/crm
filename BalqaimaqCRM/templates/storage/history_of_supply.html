@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/storage_history.css' %}">
+{% endblock link %}
+
+{% block title %}История поставок{% endblock title %}
+
+{% block body %}
+	<div class="center">
+		<h1>История поставок в склад</h1>
+
+		<table>
+			<tr>
+				<th>Исполнитель</th>
+				<th>Продукт</th>
+				<th>Количество</th>
+				<th>Дата поставки</th>
+			</tr>
+			{% for supply in supplies %}
+				{% if forloop.counter0|divisibleby:2 %}
+					<tr class="white">
+						<td>{{ supply.worker.name }}</td>
+						<td>{{ supply.product.name }}</td>
+						<td>{{ supply.amount }}</td>
+						<td>{{ supply.created_at|date:"j.m.Y" }}</td>
+					</tr>
+				{% else %}
+					<tr class="gray">
+						<td>{{ supply.worker.name }}</td>
+						<td>{{ supply.product.name }}</td>
+						<td>{{ supply.amount }}</td>
+						<td>{{ supply.created_at|date:"j.m.Y" }}</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	</div>
+{% endblock body %}

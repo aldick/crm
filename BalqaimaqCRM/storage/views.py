@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, resolve_url, redirect, Http404
 
-from .models import Product, Combo, ProductsInCombo
+from .models import Product, Combo, ProductsInCombo, Supply
 from .forms import ProductForm, SupplyForm, ComboForm
 
 def products_list_view(request):
@@ -153,4 +153,9 @@ def combo_delete_view(request, pk):
         "product": combo
     })
 
-    
+def history_of_supply_view(request):
+    supplies = Supply.objects.all()
+    return render(request, "storage/history_of_supply.html", {
+        "section": "storage",
+        "supplies": supplies
+    })

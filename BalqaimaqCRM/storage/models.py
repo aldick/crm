@@ -60,3 +60,5 @@ class Supply(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество")
     created_at = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        ordering = ['created_at']

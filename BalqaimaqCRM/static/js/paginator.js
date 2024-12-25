@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			page += 1;
 			console.log(page)
 			
-			if(!searchParams.has('phone_number')) {
+			if(searchParams.has('phone_number')) {
 				fetch(`?phone_number=${phone_number}&clients_only=1&page=`+page)
 				.then(response => response.text())
 				.then(html => {
@@ -25,7 +25,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 						blockRequest = false;
 					}
 				})
-			}	
+			}
+			else {
+				fetch(`?clients_only=1&page=`+page)
+				.then(response => response.text())
+				.then(html => {
+					if (html === '') {
+						emptyPage = true;
+					}
+					else {
+						var imageList = document.getElementById('table');
+						imageList.insertAdjacentHTML('beforeEnd', html);
+						blockRequest = false;
+					}
+				})
+			}
 		}
 	});
 
