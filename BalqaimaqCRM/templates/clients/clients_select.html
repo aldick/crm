@@ -12,21 +12,20 @@
 {% block body %}
 	<div class="center">
 		<div class="search">
-			<h1>Создание нового заказа</h1>
+			<h1>Поиск клиента</h1>
 			<form method="get">
 				{{ form.as_table }}
-				<button>Search</button>
+				<button>Поиск</button>
 			</form>
+
+			{% if error == True %}
+				<div class="error">Был введен неправильный номер</div>
+			{% endif %}
+			
 			{% if clients.count == 0 %}
 				<ul class="search-results">
 					<li><a href="{% url 'clients_create' %}?phone_number={{phone_number}}&next=order">+ Создать нового клиента</a></li>
-				</ul>
-			{% else %}
-				<ul class="search-results">
-						{% for client in clients %}
-							<li><a href="{% url 'orders_create' client.phone_number %}">{{ client.name }}, +{{ client.phone_number }}</a></li>
-						{% endfor %}
-				</ul>
+				</ul>	
 			{% endif %}
 		</div>
 	</div>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Client(models.Model):
-    phone_number = models.CharField(verbose_name="Номер телефона", max_length=15, unique=True, primary_key=True)
+    phone_number = models.CharField(verbose_name="Номер телефона", max_length=11, unique=True, primary_key=True)
     password = models.CharField(verbose_name="Пароль", max_length=100, default="12345678")
     name = models.CharField(verbose_name="Имя", max_length=100)
     address = models.CharField(verbose_name="Адрес", max_length=150)

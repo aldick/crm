@@ -154,8 +154,6 @@ def orders_detail_view(request, order_id):
         order_item_add_form = OrderItemAddForm(request.POST)
         order_combo_add_form = OrderComboAddForm(request.POST)
         
-        
-        
         if order_item_add_form.is_valid():
             order_item_add_form = order_item_add_form.save(commit=False)
             
@@ -190,16 +188,6 @@ def orders_detail_view(request, order_id):
                 
         if order_combo_add_form.is_valid():
             order_combo_add_form = order_combo_add_form.save(commit=False)
-            
-            # final = {}
-            # for combo, product in products_in_combo_with_amount.items():
-            #     for product_name, product_amount in product.items():
-            #         if product_name != 'amount':
-            #             try:
-            #                 final[product_name] += product_amount * product['amount']
-            #             except KeyError:
-            #                 final[product_name] = product_amount * product['amount']
-            # print(products_in_combo) 
             
             combo = Combo.objects.get(name=order_combo_add_form.combo.name)
             products = ProductsInCombo.objects.filter(combo=combo)

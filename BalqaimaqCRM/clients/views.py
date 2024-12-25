@@ -8,6 +8,7 @@ from .forms import ClientCreateForm, ClientUpdateForm, ClientSelectForm, ClientL
 from .models import Client
 from orders.models import Order
 
+
 def clients_list_order_view(request, slug=None):
     orders = Order.objects.all()
     form = ClientSelectForm()
@@ -18,23 +19,24 @@ def clients_list_order_view(request, slug=None):
         clients = clients
     else:
         clients = clients.order_by(slug)
-    
+
     if 'phone_number' in request.GET and request.GET['phone_number'] != '':
         q = request.GET['phone_number']
         if q[0] == "+":
             q = q.replace("+", '', 1)
         elif q[0] == "8":
             q = q.replace("8", '7', 1)
-        # multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q)) 
-        clients = Client.objects.filter(phone_number__startswith=q).filter(is_active=True)
-        
+        # multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q))
+        clients = Client.objects.filter(
+            phone_number__startswith=q).filter(is_active=True)
+
         return render(request, 'clients/clients_list.html', {
             "section": "clients",
             "clients": clients,
             'orders': orders,
             'form': form,
         })
-    
+
     else:
         paginator = Paginator(clients, 14)
         page = request.GET.get('page')
@@ -47,9 +49,9 @@ def clients_list_order_view(request, slug=None):
             if clients_only:
                 return HttpResponse('')
             clients = paginator.page(paginator.num_pages)
-            
+
         if clients_only:
-            return render(request, 'clients/clients_only_list.html',{
+            return render(request, 'clients/clients_only_list.html', {
                 'section': 'clients',
                 "clients": clients,
                 'orders': orders,
@@ -62,6 +64,7 @@ def clients_list_order_view(request, slug=None):
             'form': form,
         })
 
+
 def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
@@ -70,60 +73,64 @@ def clients_detail_view(request, pk):
     total_sum = sum(order.get_total_cost() for order in orders)
     return render(request, 'clients/clients_detail.html', {
         "section": "clients",
-		"client": client,
+        "client": client,
         "orders": orders,
         "total_sum": total_sum
     })
-    
+
+
 def clients_create_view(request, slug=None):
-    if request.method == "POST":    
+    if request.method == "POST":
         form = ClientCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            
+
             url = resolve_url("clients_list")
             if slug == "order":
                 return redirect(f'../../../orders/create/?phone_number=%2B{form.cleaned_data["phone_number"][1:]}')
             return redirect(url)
     elif 'phone_number' in request.GET:
-        phone_number = Client.objects.create(phone_number=request.GET.get("phone_number"))
+        phone_number = Client.objects.create(
+            phone_number=request.GET.get("phone_number"))
         form = ClientCreateForm(instance=phone_number)
         phone_number.delete()
-        
+
     else:
         form = ClientCreateForm()
-    
+
     return render(request, "clients/clients_create.html", {
         "section": "clients",
         "form": form,
     })
-    
+
+
 def clients_update_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
         raise Http404("Страница не найдена")
-    if request.method == "POST":    
+    if request.method == "POST":
         form = ClientUpdateForm(instance=client,
-                          data=request.POST)
+                                data=request.POST)
         if form.is_valid():
             form.save()
-            
+
             url = resolve_url("clients_detail", pk)
             return redirect(url)
     else:
         form = ClientUpdateForm(instance=client)
-        
+
     return render(request, "clients/clients_update.html", {
         "section": "clients",
         "form": form,
         "client": client
     })
-    
+
+
 def clients_delete_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
         raise Http404("Страница не найдена")
-    
+
     if request.method == "POST":
         client.is_active = False
         client.save()
@@ -132,33 +139,37 @@ def clients_delete_view(request, pk):
         'section': "clients",
         "client": client
     })
-    
-#TODO доработать выбор пользователя
+
 def clients_select_view(request, phone_number=None):
     form = ClientSelectForm()
     clients = Client.objects.filter(phone_number="1")
+    error = False
     if 'phone_number' in request.GET:
+        form = ClientSelectForm(instance=phone_number)
+
         q = request.GET['phone_number']
         if q[0] == "+":
             q = q.replace("+", '', 1)
         elif q[0] == "8":
             q = q.replace("8", '7', 1)
+
         if len(q) == 11:
-            multiple_q = Q(Q(phone_number__icontains=q) | Q(name__icontains=q)) 
-            clients = Client.objects.filter(multiple_q).filter(is_active=True)
-            
-            if clients.exists():
-                phone_number = Client.objects.get(phone_number=q)
-                form = ClientSelectForm(instance=phone_number)
-        # phone_number.delete()
-    
+            client = Client.objects.get(phone_number=q)
+
+            url = resolve_url('orders_create', client.phone_number)
+            return redirect(url)
+        else:
+            error = True
+
     return render(request, "clients/clients_select.html", {
         "section": "orders",
         "clients": clients,
         "form": form,
-        "phone_number": request.GET.get('phone_number')
+        "phone_number": request.GET.get('phone_number'),
+        "error": error,
     })
-    
+
+
 def clients_login_view(request):
     if request.method == "POST":
         form = ClientLoginForm(request.POST)
@@ -178,11 +189,12 @@ def clients_login_view(request):
                 return HttpResponse('Invalid login')
     else:
         form = ClientLoginForm()
-    
+
     return render(request, "clients/clients_login.html", {
         "section": "orders",
         "form": form,
     })
+
 
 def clients_logout_view(request):
     logout(request)
