@@ -1,9 +1,9 @@
 #Launched in python manage.py shell
 import random
 
-from .models import Client
+from clients.models import Client
 
-names_file = open('static/txt/names.txt', 'r')
+names_file = open('static/txt/names_ru.txt', 'r')
 names = []
 for name in names_file:
     names.append(name[:-1].capitalize())

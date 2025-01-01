@@ -6,8 +6,8 @@ from random import randrange, randint, choice
 from datetime import timedelta, datetime
 
 def random_date():
-	start = datetime(2024, 11, 1)
-	end = datetime(2025, 1, 1)
+	start = datetime(2025, 1, 1)
+	end = datetime(2025, 2, 1)
 	delta = end - start
 	int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
 	random_second = randrange(int_delta)
