@@ -1,13 +1,12 @@
-//TODO добавить больше выбора
-document.addEventListener('DOMContentLoaded', (event) => {
-	let url = window.location.href
-	let position = url.search("date")
-	let date = url[position+5]
-	if (url[position+6]) {
-		date = url[position+5] + url[position+6]
+function date_select() {
+	let params = new URLSearchParams(document.location.search);
+	let date = params.get('date');
+	let month = params.get('month');
+	let year = params.get('year');
+	console.log(month, year, date)
+	if(month == null && year == null && date == null) {
+		date = 't';
 	}
-	console.log(date)
-	
 	switch(date) {
 		case 't':
 			document.getElementById("select").selectedIndex = "0";
@@ -27,10 +26,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		case 'pm':
 			document.getElementById("select").selectedIndex = "5";
 			break;
+		default:
+			let select = document.getElementById("select");
+			let opt = document.createElement('option');
+
+			opt.value = '';
+			opt.innerHTML = `${month}-ый месяц, ${year}`;
+			select.appendChild(opt);
+
+			document.getElementById("select").selectedIndex = "7";
+			break;
 	}
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+	date_select()
+
+	const modal = document.querySelector(".date-select");
 
 	document.getElementById('select').addEventListener('change', function() {
 		console.log('You selected: ', this.value);
-		window.location.href = '?date=' + this.value
+		if(this.value!='mine') {
+			window.location.href = '?date=' + this.value
+		} else {
+			modal.showModal();
+		}
 	});
+
+	// confirm deletion
+	modal.addEventListener("submit", () => currentTask && currentTask.remove());
+
+	// cancel deletion
+	modal.querySelector("#cancel").addEventListener("click", function() {
+		modal.close();
+		date_select()
+	})
 })

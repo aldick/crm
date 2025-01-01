@@ -213,12 +213,12 @@ select {
   opacity: 0.5;
 }
 
-.confirm-modal[open] {
+.date-select[open] {
   opacity: 1;
   transform: translate(-50%, -50%) translateY(0);
 }
 
-.confirm-modal {
+.date-select {
   opacity: 0;
   transform: translate(-50%, -50%) translateY(50px);
   left: 50%;
@@ -226,59 +226,58 @@ select {
   border: none;
   border-radius: 0.25rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s allow-discrete;
+  transition: all 0.3s allow-discrete;;
 }
 
-.confirm-modal[open]::backdrop {
+.dialog {
+  display: flex;
+  flex-direction: column
+}
+
+.date-select label {
+  margin-bottom: 1px; 
+}
+
+.date-select[open]::backdrop {
   background: rgba(0, 0, 0, 0.25);
 }
 
-.confirm-modal::backdrop {
+.date-select::backdrop {
   background: rgba(0, 0, 0, 0);
   transition: all 0.3s allow-discrete;
 }
 
 @starting-style {
-  .confirm-modal[open] {
+  .date-select[open] {
     opacity: 0;
     transform: translate(-50%, -50%) translateY(50px);
   }
 
-  .confirm-modal[open]::backdrop {
+  .date-select[open]::backdrop {
     background: rgba(0, 0, 0, 0);
   }
 }
 
-.confirm-modal form {
+.date-select form {
   padding: 2rem;
 }
 
-.confirm-modal form > *:not(:last-child) {
+.date-select form > select:not(:last-child) {
   margin-bottom: 1rem;
 }
 
-.confirm-modal h3 {
+.date-select h3 {
   font-size: 1.5rem;
+  margin-bottom: 1rem ;
 }
 
-.confirm-modal div.preview {
-  font-size: 0.875rem;
-  padding-left: 0.5rem;
-  border-left: 2px solid var(--secondary-color);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  opacity: 0.75;
-}
-
-.confirm-modal menu {
+.date-select menu {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
 }
 
-.confirm-modal button {
+.date-select button {
   opacity: 1;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -287,17 +286,17 @@ select {
   box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
-.confirm-modal button#cancel {
+.date-select button#cancel {
   border-color: var(--cancel-color);
 }
 
-.confirm-modal button#confirm {
-  border-color: var(--confirm-color);
-  background: var(--confirm-color);
+.date-select button#confirm {
+  border-color: #0394f3;
+  background: #0394f3;
   color: #fff;
 }
 
-.confirm-modal button#confirm:hover {
-  border-color: var(--confirm-hover-color);
-  background: var(--confirm-hover-color);
+.date-select button#confirm:hover {
+  border-color: #017acb;
+  background: #017acb;
 }

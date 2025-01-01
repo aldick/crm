@@ -1,4 +1,3 @@
-const modal = document.querySelector(".confirm-modal");
 const columnsContainer = document.querySelector(".columns");
 const columns = columnsContainer.querySelectorAll(".column");
 
@@ -62,18 +61,6 @@ const handleDragstart = (event) => {
   requestAnimationFrame(() => event.target.classList.add("dragging"));
 };
 
-const handleDelete = (event) => {
-  currentTask = event.target.closest(".task");
-
-  // show preview
-  modal.querySelector(".preview").innerText = currentTask.innerText.substring(
-    0,
-    100
-  );
-
-  modal.showModal();
-};
-
 const handleEdit = (event) => {
   const task = event.target.closest(".task");
   const input = createTaskInput(task.innerText);
@@ -104,11 +91,8 @@ const updateColumnPrice = (column) => {
   const tasks = column.querySelector(".tasks").children;
   let sum = 0
   for(let i=0; i<tasks.length; i++) {
-    console.log(tasks[i].dataset.price)
     sum += +tasks[i].dataset.price
   }
-  console.log(sum + `\n\n`)
-
   column.querySelector(".column-title h2").dataset.price = sum;
 };
 
@@ -166,14 +150,7 @@ columnsContainer.addEventListener("click", (event) => {
   }
 });
 
-// confirm deletion
-modal.addEventListener("submit", () => currentTask && currentTask.remove());
-
-// cancel deletion
-modal.querySelector("#cancel").addEventListener("click", () => modal.close());
-
 // clear current task
-modal.addEventListener("close", () => (currentTask = null));
 
 //* placeholder tasks
 

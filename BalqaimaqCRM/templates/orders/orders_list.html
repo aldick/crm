@@ -23,6 +23,7 @@
 				<option value="pw">На прошлой неделе</option>
 				<option value="cm">В этом месяце</option>
 				<option value="pm">В прошлом месяце</option>
+				<option value="mine">Выбрать свое время</option>
 			</select>
 		</div>
 	</div>
@@ -153,19 +154,36 @@
 			</div>
 		</div>
 	</div>
-	<dialog class="confirm-modal">
-		<form method="dialog">
-			<h3>Delete Task?</h3>
-			<p>You are about to delete the ff. task</p>
-			<div class="preview"></div>
-	
+	<dialog class="date-select">
+		<form class="dialog">
+			<h3>Выберите время</h3>
+			<label>Месяц:</label>
+			<select name="month" id="month">
+				<option value="1">Январь</option>
+				<option value="2">Февраль</option>
+				<option value="3">Март</option>
+				<option value="4">Апрель</option>
+				<option value="5">Май</option>
+				<option value="6">Июнь</option>
+				<option value="7">Июль</option>
+				<option value="8">Август</option>
+				<option value="9">Сентябрь</option>
+				<option value="10">Октябрь</option>
+				<option value="11">Ноябрь</option>
+				<option value="12">Декабрь</option>
+			</select>
+			<label>Год:</label>
+			<select name="year" id="year">
+				<option value="2024">2024</option>
+				<option value="2025">2025</option>
+				<option value="2026">2026</option>
+			</select>
 			<menu>
-				<button type="button" id="cancel">Cancel</button>
-				<button type="submit" id="confirm">Yes, delete it.</button>
+				<button type="submit" id="confirm">Выбрать</button>
+				<button type="button" id="cancel">Отмена</button>
 			</menu>
 		</form>
-	  </dialog>
-
+	</dialog>
 	<script src="{% static 'js/order_list_date_select.js' %}"></script>
 {% endblock body %}
 

@@ -45,36 +45,42 @@ def _add_samsa_gift(order, products_in_combo):
         _remove_samsa_from_storage(amount=-1)
         
 def orders_list_view(request):
-    date = request.GET.get("date", "t")
-    
+    date = request.GET.get("date", "t")    
     start = None
     end = None
     days = None
-    if date == "t": 
-        days = 1
-        start = datetime.date.today()
-        end = start + datetime.timedelta(days=1)
-    elif date == "y":
-        days = 1
-        start = datetime.date.today() - datetime.timedelta(days=1)
-        end = datetime.date.today()
-    elif date[1] == "w":
-        days = 7
-        if date == 'cw':
-            start = datetime.date.today() - datetime.timedelta(datetime.date.today().weekday())
-        elif date == "pw":
-            start = datetime.date.today() - datetime.timedelta(datetime.date.today().weekday()) - datetime.timedelta(7)
-    elif date[1] == 'm':
-        current_year = datetime.date.today().year
-        if date == 'cm':
-            month = datetime.date.today().month
-            days = monthrange(current_year, month)[1]
-            start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) + datetime.timedelta(1)
-        elif date == "pm":
-            month = datetime.date.today().month - 1
-            days = monthrange(current_year, month)[1]
-            start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) - datetime.timedelta(days) + datetime.timedelta(1)
-    end = start + datetime.timedelta(days)
+    if date == "t" and request.GET.get("month", 'x') != 'x' :
+        month = int(request.GET.get("month"))
+        year = int(request.GET.get("year"))
+        days = monthrange(year, month)[1]
+        start = datetime.date(year, month, 1)
+        end = start + datetime.timedelta(days)
+    else:
+        if date == "t": 
+            days = 1
+            start = datetime.date.today()
+            end = start + datetime.timedelta(days=1)
+        elif date == "y":
+            days = 1
+            start = datetime.date.today() - datetime.timedelta(days=1)
+            end = datetime.date.today()
+        elif date[1] == "w":
+            days = 7
+            if date == 'cw':
+                start = datetime.date.today() - datetime.timedelta(datetime.date.today().weekday())
+            elif date == "pw":
+                start = datetime.date.today() - datetime.timedelta(datetime.date.today().weekday()) - datetime.timedelta(7)
+        elif date[1] == 'm':
+            current_year = datetime.date.today().year
+            if date == 'cm':
+                month = datetime.date.today().month
+                days = monthrange(current_year, month)[1]
+                start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) + datetime.timedelta(1)
+            elif date == "pm":
+                month = datetime.date.today().month
+                days = monthrange(current_year, month)[1]
+                start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) - datetime.timedelta(days) + datetime.timedelta(1)
+        end = start + datetime.timedelta(days)
     
     orders_stage1 = Order.objects.filter(stage=1).filter(created_at__gt=start).filter(created_at__lt=end)
     orders_stage2 = Order.objects.filter(stage=2).filter(created_at__gt=start).filter(created_at__lt=end)
