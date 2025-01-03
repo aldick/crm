@@ -265,6 +265,7 @@ def orders_delete_view(request, order_id):
     return render(request, "orders/orders_delete.html", {
         'section': "orders",
         "order": order,
+        'order_id': order_id
     })
     
 def orders_item_delete_view(request, item_id):

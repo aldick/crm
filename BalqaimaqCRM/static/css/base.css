@@ -80,6 +80,13 @@ h1 {
 	position: absolute;
 	left: 50px;
 	top: 160px;
+	color: #ff9900;
+	background-color: white;
+}
+
+.back-without-absolute {
+	color: #ff9900;
+	background-color: white;
 }
 
 .selected {

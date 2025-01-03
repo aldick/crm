@@ -9,7 +9,11 @@
 {% block title %}Новый клиент{% endblock title %}
 
 {% block body %}
-	<button class="back" onclick="history.back()">←</button>
+	{% if request.GET %}
+		<button onclick="history.back()" class="back">🠐 Назад</button>
+	{% else %}
+		<button onclick="window.location='{% url 'clients_list' %}'" class="back">🠐 Назад</button>
+	{% endif %}
 	<div class="center">
 		<form method="post">
 			<h1>Создание нового клиента</h1>

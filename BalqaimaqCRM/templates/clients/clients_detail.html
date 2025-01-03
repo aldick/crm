@@ -11,9 +11,9 @@
 {% block body %}
 	<div class="heading">
 		{% if "update" in request.META.HTTP_REFERER %}
-		<button onclick="window.location='{% url 'clients_list' %}'">←</button>
+			<button class="back-without-absolute" onclick="window.location='{% url 'clients_list' %}'">🠐 Назад</button>
 		{% else %}
-		<button onclick="history.back()">←</button> 
+			<button class="back-without-absolute" onclick="history.back()">🠐 Назад</button> 
 		{% endif %}
 		
 		<h1>Клиент +{{ client.phone_number }}</h1>

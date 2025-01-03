@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<button onclick="history.back()" class="back">←</button>
+<button onclick="window.location='{% url 'clients_detail' client_id %}'" class="back">🠐 Назад</button>
 
 <div class="center">
 	<h1>Удалить клиента</h1>

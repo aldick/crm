@@ -9,7 +9,7 @@
 {% block title %}Изменение клиента {{ client.phone_number }}{% endblock title %}
 
 {% block body %}
-	<button class="back" onclick="history.back()">←</button>
+	<button onclick="window.location='{% url 'clients_detail' client.phone_number %}'" class="back">🠐 Назад</button>
 	<div class="center">
 		<form method="post">
 			<h1>Изменение клиента +{{ client.phone_number }}</h1>

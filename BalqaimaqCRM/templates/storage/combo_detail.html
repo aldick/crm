@@ -12,9 +12,9 @@
 
 {% block body %}
 	{% if "update" in request.META.HTTP_REFERER %}
-	<button onclick="window.location='{% url 'products_list' %}'">←</button>
+		<button	onclick="window.location='{% url 'products_list' %}'" class="back">🠐 Назад</button>
 	{% else %}
-	<button onclick="history.back()">←</button> 
+		<button onclick="history.back()" class="back">🠐 Назад</button>
 	{% endif %}
 
 	<div class="center">

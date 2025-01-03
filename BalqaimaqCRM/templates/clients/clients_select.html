@@ -12,19 +12,24 @@
 {% block body %}
 	<div class="center">
 		<div class="search">
+			<button onclick="window.location='{% url 'orders_list' %}'" class="back">🠐 Назад</button>
 			<h1>Поиск клиента</h1>
 			<form method="get">
 				{{ form.as_table }}
 				<button>Поиск</button>
 			</form>
 
-			{% if error == True %}
-				<div class="error">Был введен неправильный номер</div>
+			{% if error != '' %}
+				<div class="error">{{ error }}</div>
 			{% endif %}
 			
 			{% if clients.count == 0 %}
 				<ul class="search-results">
-					<li><a href="{% url 'clients_create' %}?phone_number={{phone_number}}&next=order">+ Создать нового клиента</a></li>
+					{% if phone_number != None %}
+						<li><a href="{% url 'clients_create' %}?phone_number={{phone_number}}&next=order">+ Создать нового клиента</a></li>
+					{% else %}
+						<li><a href="{% url 'clients_create' %}?phone_number=&next=order">+ Создать нового клиента</a></li>
+					{% endif %}
 				</ul>	
 			{% endif %}
 		</div>

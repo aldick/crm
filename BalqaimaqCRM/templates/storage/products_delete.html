@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<button onclick="history.back()" class="back">←</button>
+	<button onclick="history.back()" class="back">🠐 Назад</button>
 
-<div class="center">
-	<h1>Удалить продукт</h1>
+	<div class="center">
+		<h1>Удалить продукт</h1>
 
-	<p>Вы точно хотите удалить этого клиента?: <br> {{ client.name }} {{ client.phone_number }}</p>
+		<p>Вы точно хотите удалить этого клиента?: <br> {{ client.name }} {{ client.phone_number }}</p>
 
-	<form action="" method="post">
-	{% csrf_token %}
-	<button type="submit">Удалить</button>
-	</form>
-</div>
+		<form action="" method="post">
+		{% csrf_token %}
+		<button type="submit">Удалить</button>
+		</form>
+	</div>
 {% endblock body %}

@@ -90,11 +90,12 @@ def clients_create_view(request, slug=None):
                 return redirect(f'../../../orders/create/?phone_number=%2B{form.cleaned_data["phone_number"][1:]}')
             return redirect(url)
     elif 'phone_number' in request.GET:
-        phone_number = Client.objects.create(
-            phone_number=request.GET.get("phone_number"))
-        form = ClientCreateForm(instance=phone_number)
-        phone_number.delete()
-
+        if request.GET.get("phone_number") == '':
+            form = ClientCreateForm()
+        else:
+            phone_number = Client.objects.create(phone_number=request.GET.get("phone_number"))
+            form = ClientCreateForm(instance=phone_number)
+            phone_number.delete()
     else:
         form = ClientCreateForm()
 
@@ -137,13 +138,14 @@ def clients_delete_view(request, pk):
         return redirect('clients_list')
     return render(request, "clients/clients_delete.html", {
         'section': "clients",
-        "client": client
+        "client": client,
+        "client_id": pk
     })
 
 def clients_select_view(request, phone_number=None):
     form = ClientSelectForm()
     clients = Client.objects.filter(phone_number="1")
-    error = False
+    error = ''
     if 'phone_number' in request.GET:
         form = ClientSelectForm(instance=phone_number)
 
@@ -154,12 +156,17 @@ def clients_select_view(request, phone_number=None):
             q = q.replace("8", '7', 1)
 
         if len(q) == 11:
-            client = Client.objects.get(phone_number=q)
-
-            url = resolve_url('orders_create', client.phone_number)
-            return redirect(url)
+            if Client.objects.filter(phone_number=q).exists():
+                client = Client.objects.get(phone_number=q)
+                url = resolve_url('orders_create', client.phone_number)
+                return redirect(url)
+            else:
+                phone_number = Client.objects.create(phone_number=request.GET.get("phone_number"))
+                form = ClientSelectForm(instance=phone_number)
+                phone_number.delete()
+                error = "Такого клиента не существует"
         else:
-            error = True
+            error = "Был введен неправильный номер"
 
     return render(request, "clients/clients_select.html", {
         "section": "orders",
