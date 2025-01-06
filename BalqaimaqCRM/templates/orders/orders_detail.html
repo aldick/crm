@@ -17,7 +17,7 @@
 			{% if "create" in request.META.HTTP_REFERER %}
 				<button onclick="window.location='{% url 'orders_list' %}'" class="back-without-absolute">🠐 Назад</button>
 			{% else %}
-				<button onclick="history.back()">←</button> 
+			<button onclick="history.back()" class="back-without-absolute">🠐 Назад</button>
 			{% endif %}
 
 			<h1 style="font-size: 40px;">Заказ #{{order.id}}</h1>

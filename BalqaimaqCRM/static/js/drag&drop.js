@@ -50,9 +50,9 @@ const handleDragend = (event) => {
   let order_stage = event.target.closest(".column").getAttribute('class').split(" ")[1][6]
   fetch(`/orders/column-update/${order_id}/${order_stage}/`, options)
 
-  setTimeout(() => {
-    location.reload();
-  }, "300");
+  // setTimeout(() => {
+  //   location.reload();
+  // }, "300");
 };
 
 const handleDragstart = (event) => {
@@ -155,9 +155,10 @@ columnsContainer.addEventListener("click", (event) => {
 //* placeholder tasks
 
 let tasks = document.getElementsByClassName("task");
-console.log(tasks.length)
+console.log("tasks length:", tasks.length)
 
 for (let i=0; i<tasks.length; i++) {
-	tasks[i].addEventListener("dragstart", handleDragstart);
+	  tasks[i].addEventListener("dragstart", handleDragstart);
   	tasks[i].addEventListener("dragend", handleDragend);
+    console.log("hui")
 }

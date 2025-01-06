@@ -1,4 +1,27 @@
 {% extends 'base.html' %}
+
+{% comment %} <div class="task {{order.id}}" draggable="true" data-price="{{order.get_total_cost}}">
+	<div>
+		<button ondblclick="window.location='{% url 'orders_detail' order.id %}'" class="board-item-content-text id" href="{% url 'orders_detail' order.id %}">Заказ #{{order.id}}</button>
+		<br>
+		<button ondblclick="window.location='{% url 'clients_detail' order.phone_number %}'" class="board-item-content-text phone_number" href="{% url 'clients_detail' order.phone_number %}">
+			Номер телефона: +{{order.phone_number}}
+		</button>
+		<p class="board-item-content-text created_at">
+			Дата заказа: {{order.created_at|date:"j.m.Y"}}
+		</p>
+		<p class="board-item-content-text address">
+			Время: {{order.created_at|date:"H:i"}}
+		</p>
+		<p class="board-item-content-text address">
+			Адрес: {{order.address}}
+		</p>
+		<b data-price="{{order.get_total_cost}}" class="board-item-content-text price">
+			{{order.get_total_cost}} ₸
+		</b>
+	</div>
+</div> {% endcomment %}
+
 {% load static %}
 
 {% block title %}
@@ -8,149 +31,56 @@
 {% block link %}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 	<link rel="stylesheet" href="{% static 'css/orders_list.css' %}" />
-	<script src="{% static 'js/drag&drop.js' %}" defer></script>
 {% endblock link %}
 
 {% block body %}
-	<div class="center">
-		<div class="heading">
-			<button class="heading-button" onclick="window.location='{% url 'clients_select' %}'">+ Новый заказ</button>
-			
-			<select id="select" name="select">
-				<option value="t">Сегодня</option>
-				<option value="y">Вчера</option>
-				<option value="cw">На этой неделе</option>
-				<option value="pw">На прошлой неделе</option>
-				<option value="cm">В этом месяце</option>
-				<option value="pm">В прошлом месяце</option>
-				<option value="mine">Выбрать свое время</option>
-			</select>
+	<div class="loader" id="loader"></div>
+	
+	<div id="content">
+		<div class="center">
+			<div class="heading">
+				<button class="heading-button" onclick="window.location='{% url 'clients_select' %}'">+ Новый заказ</button>
+				
+				<select id="select" name="select">
+					<option value="t">Сегодня</option>
+					<option value="y">Вчера</option>
+					<option value="cw">На этой неделе</option>
+					<option value="pw">На прошлой неделе</option>
+					<option value="cm">В этом месяце</option>
+					<option value="pm">В прошлом месяце</option>
+					<option value="mine">Выбрать свое время</option>
+				</select>
+			</div>
 		</div>
-	</div>
 
-  <div class="container columns">
-		<div class="column column1">
-			<div class="column-title">
-				<h2 data-price="0">Упаковка</h2>
-				<h3>{{ orders_stage1_price }} ₸</h3>
-			</div>
-			<div class="tasks">
-				{% for order in orders_stage1 %}
-				<div class="task {{order.id}}" draggable="true" data-price="{{order.get_total_cost}}">
-					<div>
-						<button ondblclick="window.location='{% url 'orders_detail' order.id %}'" class="board-item-content-text id" href="{% url 'orders_detail' order.id %}">Заказ #{{order.id}}</button>
-						<br>
-						<button ondblclick="window.location='{% url 'clients_detail' order.phone_number %}'" class="board-item-content-text phone_number" href="{% url 'clients_detail' order.phone_number %}">
-							Номер телефона: +{{order.phone_number}}
-						</button>
-						<p class="board-item-content-text created_at">
-							Дата заказа: {{order.created_at|date:"j.m.Y"}}
-						</p>
-						<p class="board-item-content-text address">
-							Время: {{order.created_at|date:"H:i"}}
-						</p>
-						<p class="board-item-content-text address">
-							Адрес: {{order.address}}
-						</p>
-						<b data-price="{{order.get_total_cost}}" class="board-item-content-text price">
-							{{order.get_total_cost}} ₸
-						</b>
-					</div>
+		<div class="container columns">
+			<div class="column column1">
+				<div class="column-title">
+					<h2 data-price="0">Упаковка</h2>
+					{% comment %} <h3>{{ orders_stage1_price }} ₸</h3> {% endcomment %}
 				</div>
-				{% endfor %}
+				<div class="tasks" id="tasks1"></div>
 			</div>
-		</div>
-		<div class="column column2">
-			<div class="column-title">
-				<h2 data-price="0">Готов к доставке</h2>
-				<h3>{{ orders_stage2_price }} ₸</h3>
-			</div>
-			<div class="tasks">
-				{% for order in orders_stage2 %}
-				<div class="task {{order.id}}" draggable="true" data-price="{{order.get_total_cost}}">
-					<div>
-						<button ondblclick="window.location='{% url 'orders_detail' order.id %}'" class="board-item-content-text id" href="{% url 'orders_detail' order.id %}">Заказ #{{order.id}}</button>
-						<br>
-						<button ondblclick="window.location='{% url 'clients_detail' order.phone_number %}'" class="board-item-content-text phone_number" href="{% url 'clients_detail' order.phone_number %}">
-							Номер телефона: +{{order.phone_number}}
-						</button>
-						<p class="board-item-content-text created_at">
-							Дата заказа: {{order.created_at|date:"j.m.Y"}}
-						</p>
-						<p class="board-item-content-text address">
-							Время: {{order.created_at|date:"H:i"}}
-						</p>
-						<p class="board-item-content-text address">
-							Адрес: {{order.address}}
-						</p>
-						<b data-price="{{order.get_total_cost}}" class="board-item-content-text price">
-							{{order.get_total_cost}} ₸
-						</b>
-					</div>
+			<div class="column column2">
+				<div class="column-title">
+					<h2 data-price="0">Готов к доставке</h2>
+					{% comment %} <h3>{{ orders_stage2_price }} ₸</h3> {% endcomment %}
 				</div>
-				{% endfor %}
+				<div class="tasks" id="tasks2"></div>
 			</div>
-		</div>
-		<div class="column column3">
-			<div class="column-title">
-				<h2 data-price="0">Доставляется</h2>
-				<h3>{{ orders_stage3_price }} ₸</h3>
-			</div>
-			<div class="tasks">
-				{% for order in orders_stage3 %}
-				<div class="task {{order.id}}" draggable="true" data-price="{{order.get_total_cost}}">
-					<div>
-						<button ondblclick="window.location='{% url 'orders_detail' order.id %}'" class="board-item-content-text id" href="{% url 'orders_detail' order.id %}">Заказ #{{order.id}}</button>
-						<br>
-						<button ondblclick="window.location='{% url 'clients_detail' order.phone_number %}'" class="board-item-content-text phone_number" href="{% url 'clients_detail' order.phone_number %}">
-							Номер телефона: +{{order.phone_number}}
-						</button>
-						<p class="board-item-content-text created_at">
-							Дата заказа: {{order.created_at|date:"j.m.Y"}}
-						</p>
-						<p class="board-item-content-text address">
-							Время: {{order.created_at|date:"H:i"}}
-						</p>
-						<p class="board-item-content-text address">
-							Адрес: {{order.address}}
-						</p>
-						<b data-price="{{order.get_total_cost}}" class="board-item-content-text price">
-							{{order.get_total_cost}} ₸
-						</b>
-					</div>
+			<div class="column column3">
+				<div class="column-title">
+					<h2 data-price="0">Доставляется</h2>
+					{% comment %} <h3>{{ orders_stage3_price }} ₸</h3> {% endcomment %}
 				</div>
-				{% endfor %}
+				<div class="tasks" id="tasks3"></div>
 			</div>
-		</div>
-		<div class="column column4">
-			<div class="column-title">
-				<h2 data-price="0">В процессе</h2>
-				<h3>{{ orders_stage4_price }} ₸</h3>
-			</div>
-			<div class="tasks">
-				{% for order in orders_stage4 %}
-				<div class="task {{order.id}}" draggable="true" data-price="{{order.get_total_cost}}">
-					<div>
-						<button ondblclick="window.location='{% url 'orders_detail' order.id %}'" class="board-item-content-text id" href="{% url 'orders_detail' order.id %}">Заказ #{{order.id}}</button>
-						<br>
-						<button ondblclick="window.location='{% url 'clients_detail' order.phone_number %}'" class="board-item-content-text phone_number" href="{% url 'clients_detail' order.phone_number %}">
-							Номер телефона: +{{order.phone_number}}
-						</button>
-						<p class="board-item-content-text created_at">
-							Дата заказа: {{order.created_at|date:"j.m.Y"}}
-						</p>
-						<p class="board-item-content-text address">
-							Время: {{order.created_at|date:"H:i"}}
-						</p>
-						<p class="board-item-content-text address">
-							Адрес: {{order.address}}
-						</p>
-						<b data-price="{{order.get_total_cost}}" class="board-item-content-text price">
-							{{order.get_total_cost}} ₸
-						</b>
-					</div>
+			<div class="column column4">
+				<div class="column-title">
+					<h2 data-price="0">В процессе</h2>
+					{% comment %} <h3>{{ orders_stage4_price }} ₸</h3> {% endcomment %}
 				</div>
-				{% endfor %}
+				<div class="tasks" id="tasks4"></div>
 			</div>
 		</div>
 	</div>
@@ -184,6 +114,6 @@
 			</menu>
 		</form>
 	</dialog>
-	<script src="{% static 'js/order_list_date_select.js' %}"></script>
+	<script src="{% static 'js/order_list_date_select.js' %}" defer></script>
 {% endblock body %}
 

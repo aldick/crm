@@ -44,8 +44,8 @@ def _add_samsa_gift(order, products_in_combo):
         gift.delete()
         _remove_samsa_from_storage(amount=-1)
         
-def orders_list_view(request):
-    date = request.GET.get("date", "t")    
+def get_orders(request):
+    date = request.GET.get("date", 't')
     start = None
     end = None
     days = None
@@ -90,16 +90,29 @@ def orders_list_view(request):
     orders_stage2_price = sum(order.get_total_cost() for order in orders_stage2)
     orders_stage3_price = sum(order.get_total_cost() for order in orders_stage3)
     orders_stage4_price = sum(order.get_total_cost() for order in orders_stage4)
+    
+    orders = {1: {}, 2: {}, 3: {}, 4: {}}
+    orders_stages = [orders_stage1, orders_stage2, orders_stage3, orders_stage4]
+    for i in range(1, 5):
+        for order in orders_stages[i-1]:
+            orders[i][order.id] = {
+                "id": order.id,
+                'phone_number': order.phone_number.phone_number,
+                'address': order.address,
+                'date': order.created_at.strftime("%d.%m.%Y"),
+                'time': order.created_at.strftime("%H:%M"),
+                'total_cost': order.get_total_cost(),
+                'url': {
+                    "orders_detail_url": resolve_url("orders_detail", order.id),
+                    "clients_detail_url": resolve_url("clients_detail", order.phone_number)
+                }
+            }
+    return JsonResponse(orders)
+            
+        
+def orders_list_view(request):
     return render(request, "orders/orders_list.html", {
         "section": "orders",
-        "orders_stage1": orders_stage1,
-        "orders_stage2": orders_stage2,
-        "orders_stage3": orders_stage3,
-        "orders_stage4": orders_stage4,
-        "orders_stage1_price": orders_stage1_price,
-        "orders_stage2_price": orders_stage2_price,
-        "orders_stage3_price": orders_stage3_price,
-        "orders_stage4_price": orders_stage4_price,
 	})
 
 def orders_create_view(request, phone_number):

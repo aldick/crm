@@ -46,6 +46,7 @@ for i in range(300):
 		order_item = OrderItem(order_id=order.id, product_id=product.id, amount=amount)
 		order_item.save()
 
+
 orders = Order.objects.all()
 for order in orders:
     client = Client.objects.get(phone_number=order.phone_number)

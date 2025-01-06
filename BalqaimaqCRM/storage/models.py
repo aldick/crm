@@ -23,7 +23,7 @@ class Product(models.Model):
         return reverse("products_detail", args=[self.id])
     
 class Combo(models.Model):
-    products = models.ManyToManyField(Product, through='ProductsInCombo')
+    products = models.ManyToManyField(Product, through='ProductsInCombo', verbose_name="Продукты")
     name = models.CharField(max_length=50, verbose_name="Имя товара")
     description = models.TextField(verbose_name="Описание", blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to="products/", verbose_name="Изображение")
