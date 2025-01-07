@@ -61,8 +61,10 @@ function loader(index) {
 		.then(data => {
 			console.log(data)
 			for(let i=1; i<5; i++) {
+				let final_cost = 0
 				for(order in data[i]) {
 					order = data[i][order]
+					final_cost += order['total_cost']
 					document.getElementById(`tasks${i}`).insertAdjacentHTML(
 						'beforeend',
 						`
@@ -90,6 +92,11 @@ function loader(index) {
 						`
 					)
 				}
+				document.getElementById(`title${i}`).insertAdjacentHTML(
+					'afterend',
+					`<h3>${ final_cost } ₸</h3>`
+				)
+
 			}
 			
 			addScript("../static/js/drag&drop.js");
