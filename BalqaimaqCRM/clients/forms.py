@@ -5,7 +5,7 @@ from .models import Client
 
 class ClientLoginForm(forms.Form):
     username = forms.CharField(label="Номер телефона")
-    password = forms.CharField(label="Пароль", widget=forms.PasswordInput)
+    password = forms.CharField(label="Пароль", widget=forms.PasswordInput, max_length=11)
     
     def clean_username(self):
         username = self.cleaned_data["username"]
@@ -15,9 +15,6 @@ class ClientLoginForm(forms.Form):
         
         elif username[0] == "8":
             username = username.replace("8", '7', 1)
-            
-        if len(username) != 11:
-            raise forms.ValidationError("Введен неправильный номер")
 		
         return username
 

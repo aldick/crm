@@ -2,13 +2,15 @@ from django.shortcuts import render, get_object_or_404, resolve_url, redirect, H
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger    
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 from .forms import ClientCreateForm, ClientUpdateForm, ClientSelectForm, ClientLoginForm
 from .models import Client
 from orders.models import Order
 
-
+@login_required
 def clients_list_order_view(request, slug=None):
     orders = Order.objects.all()
     form = ClientSelectForm()
@@ -65,6 +67,7 @@ def clients_list_order_view(request, slug=None):
         })
 
 
+@login_required
 def clients_detail_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
@@ -79,6 +82,7 @@ def clients_detail_view(request, pk):
     })
 
 
+@login_required
 def clients_create_view(request, slug=None):
     if request.method == "POST":
         form = ClientCreateForm(request.POST)
@@ -105,6 +109,7 @@ def clients_create_view(request, slug=None):
     })
 
 
+@login_required
 def clients_update_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
@@ -127,6 +132,7 @@ def clients_update_view(request, pk):
     })
 
 
+@login_required
 def clients_delete_view(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if not client.is_active:
@@ -142,6 +148,7 @@ def clients_delete_view(request, pk):
         "client_id": pk
     })
 
+@login_required
 def clients_select_view(request, phone_number=None):
     form = ClientSelectForm()
     clients = Client.objects.filter(phone_number="1")
@@ -178,31 +185,50 @@ def clients_select_view(request, phone_number=None):
 
 
 def clients_login_view(request):
+    error = False
     if request.method == "POST":
         form = ClientLoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
+            username = form.cleaned_data["username"]
+            
+            User = get_user_model()
+            users = User.objects.all()
+            users = [user.username for user in users]
+            if username in users:
+                pass
+            elif len(username) != 11:
+                error = True
+                return render(request, "clients/clients_login.html", {
+                    "section": "orders",
+                    "form": form,
+                    "error": error
+                })
+                
             user = authenticate(request,
                                 username=cd["username"],
                                 password=cd['password'])
+                
             if user is not None:
                 if user.is_active:
                     login(request, user)
                     url = resolve_url("clients_list")
                     return redirect(url)
                 else:
-                    return HttpResponse('Disabled account')
+                    error = True
             else:
-                return HttpResponse('Invalid login')
+                error = True
     else:
         form = ClientLoginForm()
 
     return render(request, "clients/clients_login.html", {
         "section": "orders",
         "form": form,
+        "error": error
     })
 
 
+@login_required
 def clients_logout_view(request):
     logout(request)
     return redirect('clients_list')

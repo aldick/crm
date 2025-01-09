@@ -3,6 +3,7 @@ from calendar import monthrange
 
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url, HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from .models import Order, OrderItem
 from clients.models import Client
@@ -109,12 +110,14 @@ def get_orders(request):
             }
     return JsonResponse(orders)
             
-        
+
+@login_required        
 def orders_list_view(request):
     return render(request, "orders/orders_list.html", {
         "section": "orders",
 	})
 
+@login_required
 def orders_create_view(request, phone_number):
     if request.method == "POST":
         form = OrderCreateForm(data=request.POST)
@@ -130,6 +133,7 @@ def orders_create_view(request, phone_number):
         "form": form
     })
     
+@login_required
 def orders_update_view(request, order_id):
     order = Order.objects.get(id=order_id)
     if request.method == "POST":
@@ -146,6 +150,7 @@ def orders_update_view(request, order_id):
         "form": form
     })
     
+@login_required
 def orders_detail_view(request, order_id):
     error = False
     order = Order.objects.get(id=order_id)
@@ -263,7 +268,8 @@ def orders_detail_view(request, order_id):
         "order_combo_add_form": order_combo_add_form,
         "error": error
     })
-    
+
+@login_required    
 def orders_delete_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     
@@ -281,6 +287,7 @@ def orders_delete_view(request, order_id):
         'order_id': order_id
     })
     
+@login_required
 def orders_item_delete_view(request, item_id):
     order_item = OrderItem.objects.get(id=item_id)
     order_id = order_item.order_id
@@ -301,6 +308,7 @@ def orders_item_delete_view(request, item_id):
         "order": order_item 
     })
     
+@login_required
 def orders_combo_delete_view(request, combo_id, order_id):
     order_combo = OrderComboItem.objects.get(combo_id=combo_id, order_id=order_id)
     order_id = order_combo.order_id

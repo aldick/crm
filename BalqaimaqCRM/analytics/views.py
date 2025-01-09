@@ -2,22 +2,26 @@ import datetime
 from calendar import monthrange
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from orders.models import Order, OrderItem
 from storage.models import Product
 from clients.models import Worker
 
+@login_required
 def selling_view(request):
     return render(request, "analytics/selling.html", {
 		"section": "analytics"
 	})
 
+@login_required
 def products_view(request):
     return render(request, "analytics/products.html", {
         "section": "analytics"
     })
 
 #TODO доработать эту страницу
+@login_required
 def workers_view(request):
     date = request.GET.get("date", "cw")
     print(date)

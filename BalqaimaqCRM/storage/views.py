@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, resolve_url, redirect, Http404
+from django.contrib.auth.decorators import login_required
 
 from .models import Product, Combo, ProductsInCombo, Supply
 from .forms import ProductForm, SupplyForm, ComboForm
 
+@login_required
 def products_list_view(request):
     products_list = Product.objects.filter(available=True)
     combo_list = Combo.objects.filter(available=True)
@@ -12,6 +14,7 @@ def products_list_view(request):
         "combo_list": combo_list
     })
     
+@login_required
 def products_table_view(request, slug=None):
     products_list = Product.objects.filter(available=True)
     if slug:
@@ -21,6 +24,7 @@ def products_table_view(request, slug=None):
         "products_list": products_list
     })
     
+@login_required
 def products_detail_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if not product.available:
@@ -30,6 +34,7 @@ def products_detail_view(request, pk):
         "product": product
     })
     
+@login_required
 def combo_detail_view(request, pk):
     combo = Combo.objects.get(id=pk)
     products_in_combo = ProductsInCombo.objects.filter(combo=combo)
@@ -39,6 +44,7 @@ def combo_detail_view(request, pk):
         "products_in_combo": products_in_combo
     })
 
+@login_required
 def products_create_view(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
@@ -53,6 +59,7 @@ def products_create_view(request):
         "form": form
     })
     
+@login_required
 def combo_create_view(request):
     if request.method == "POST":
         form = ComboForm(request.POST, request.FILES)
@@ -67,6 +74,7 @@ def combo_create_view(request):
         "form": form
     })
 
+@login_required
 def products_update_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if not product.available:
@@ -87,6 +95,7 @@ def products_update_view(request, pk):
         "product": product
     })
     
+@login_required
 def combo_update_view(request, pk):
     combo = get_object_or_404(Combo, id=pk)
     if not combo.available:
@@ -107,6 +116,7 @@ def combo_update_view(request, pk):
         "combo": combo
     })
     
+@login_required
 def products_supply_view(request):
     if request.method == "POST":
         form = SupplyForm(data=request.POST)
@@ -125,6 +135,7 @@ def products_supply_view(request):
         "form": form,
     })
 
+@login_required
 def products_delete_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if not product.available:
@@ -139,6 +150,7 @@ def products_delete_view(request, pk):
         "product": product 
     })
     
+@login_required
 def combo_delete_view(request, pk):
     combo = get_object_or_404(Combo, id=pk)
     if not combo.available:
@@ -153,6 +165,7 @@ def combo_delete_view(request, pk):
         "product": combo
     })
 
+@login_required
 def history_of_supply_view(request):
     supplies = Supply.objects.all()
     return render(request, "storage/history_of_supply.html", {
