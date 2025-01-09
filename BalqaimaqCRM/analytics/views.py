@@ -55,7 +55,7 @@ def _get_days(date):
             days = monthrange(current_year, month)[1]
             start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) + datetime.timedelta(1)
         elif date == "pm":
-            month = datetime.date.today().month - 1
+            month = (datetime.date.today().month + 1) % 12 - 1 
             days = monthrange(current_year, month)[1]
             start = datetime.date.today() - datetime.timedelta(datetime.date.today().day) - datetime.timedelta(days) + datetime.timedelta(1)
     end = start + datetime.timedelta(days)
@@ -67,6 +67,7 @@ def get_selling(request, date):
     days, start, end = _get_days(date)
     orders = Order.objects.filter(created_at__gt=start).filter(created_at__lt=end)
     total_sum = 0
+    
     
     for i in range(1, days+1):
         orders_dict["days"][i] = 0
