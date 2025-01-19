@@ -1,0 +1,51 @@
+services:
+  web:
+    build: .
+    restart: always
+    volumes:
+      - .:/django
+      - static-data:/BalqaimaqCRM/staticfiles
+    ports:
+      - 8001:8001
+    image: web:django
+    container_name: django_container
+    # command: ["python", "BalqaimaqCRM//manage.py", "runserver", "0.0.0.0:8000"]
+    command: sh -c "cd BalqaimaqCRM && gunicorn --bind 0.0.0.0:8001 BalqaimaqCRM.wsgi"
+    environment:
+    - POSTGRES_DB=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - DEBUG=true
+    - SECRET_KEY=django-insecure-pt86v0=objn6@th9e^pe9tmucc!#f_0iyxlc2)7y=7+=zlr4hc
+    depends_on:
+      - db
+    links:
+       - db:db
+    networks:
+       - djangonetwork
+  db:
+    image: postgres:14.5
+    restart: always
+    volumes:
+    - ./BalqaimaqCRM/data/db:/var/lib/postgresql/data:z
+    environment:
+    - POSTGRES_DB=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    networks:
+    - djangonetwork
+  nginx:
+    build: ./nginx
+    image: nginx
+    container_name: "nginx"
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+networks:
+  djangonetwork:
+    driver: bridge
+
+volumes:
+  static-data:

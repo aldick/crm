@@ -2,7 +2,5 @@ venv/
 .env
 BalqaimaqCRM.drawio
 BalqaimaqCRM.md
-Dockerfile
-docker-compose.yml
 .dockerignore
 .gitignore
