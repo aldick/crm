@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-	Аналитика товаров
+	Аналитика продаж
 {% endblock title %}
 
 {% block link %}
@@ -11,7 +11,8 @@
 
 {% block body %}
 	<div class="heading">
-		<h2>Аналитика товаров</h2>
+		<h1>Общая сумма продаж: <span id="total-sum"></span></h1>
+
 		<select id="select" name="select">
 			<option value="cw">На этой неделе</option>
 			<option value="pw">На прошлой неделе</option>
@@ -21,9 +22,19 @@
 	</div>
 
 	<div class="chart">
-		<canvas id="myChart"></canvas>
+		<canvas id="myChart1"></canvas>
+	</div>
+
+	<div class="pie-list">
+		<div class="pie-item">
+			<canvas id="myChart2"></canvas>
+		</div>
+
+		<div class="pie-item">
+			<canvas id="myChart3"></canvas>
+		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="{% static 'js/analytics_products.js' %}"></script>
+	<script src="{% static 'js/analytics_selling.js' %}"></script>
 {% endblock body %}

@@ -12,7 +12,7 @@
 
 {% block body %}
 	<div class="heading">
-		<h2t>Аналитика рабочих</h2t>
+		<h1>Аналитика рабочих</h1>
 		<select id="select" name="select">
 			<option value="cw">На этой неделе</option>
 			<option value="pw">На прошлой неделе</option>
@@ -23,21 +23,25 @@
 
 	<table>
 		<tr>
+			<td onclick="window.location='{% url 'analytics_workers_create' %}'" class="create" colspan="3">
+				+ Новый рабочий
+			</td>
+		</tr>
+		<tr>
 			<th>Имя</th>
 			<th>Номер телефона</th>
 			<th>Количество товара</th>
-			<th>Зароботная плата</th>
 		</tr>
 		{% for worker in workers %}
 			{% if forloop.counter0|divisibleby:2 %}
-				<tr class="white">
+				<tr onclick="window.location='{% url 'analytics_workers_detail' worker.phone_number %}'" class="white">
 					<td>{{ worker.name }}</td>
 					<td>+{{ worker.phone_number }}</td>
 					<td>
 						{% for work, products in supplies.items %}
 							{% if work == worker.phone_number %}
 								{% if not products %}
-									<p>Ничего 0</p>
+									<p>...</p>
 								{% else %}
 									{% for product, amount in products.items %}
 										{{ product }}: {{ amount }} кг <br>
@@ -46,17 +50,16 @@
 							{% endif %}
 						{% endfor %}
 					</td>
-					<td></td>
 				</tr>
 			{% else %}
-				<tr class="gray">
+				<tr onclick="window.location='{% url 'analytics_workers_detail' worker.phone_number %}'" class="gray">
 					<td>{{ worker.name }}</td>
 					<td>+{{ worker.phone_number }}</td>
 					<td>
 						{% for work, products in supplies.items %}
 							{% if work == worker.phone_number %}
 								{% if not products %}
-									<p>Ничего 0</p>
+									<p>...</p>
 								{% else %}
 									{% for product, amount in products.items %}
 										{{ product }}: {{ amount }} кг <br>
@@ -65,11 +68,10 @@
 							{% endif %}
 						{% endfor %}
 					</td>
-					<td></td>
 				</tr>
 			{% endif %}
 		{% endfor %}
 	</table>
 
 	<script src="{% static 'js/analytics_workers.js' %}"></script>
-{% endblock body %}
+{% endblock body %}	

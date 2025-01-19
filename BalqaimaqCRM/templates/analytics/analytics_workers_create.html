@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock link %}
+
+{% block title %}Новый работник{% endblock title %}
+
+{% block body %}
+	{% if request.GET %}
+		<button onclick="history.back()" class="back">🠐 Назад</button>
+	{% else %}
+		<button onclick="window.location='{% url 'analytics_workers_list' %}'" class="back">🠐 Назад</button>
+	{% endif %}
+	<div class="center">
+		<form method="post">
+			<h1>Создание нового работника</h1>
+			{% csrf_token %}
+
+			{{ form.as_table }}
+			<button type="submit">Создать</button>
+		</form>
+	</div>
+{% endblock body %}

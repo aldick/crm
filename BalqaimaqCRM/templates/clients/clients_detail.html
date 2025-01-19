@@ -23,8 +23,7 @@
 	</div>
 
 	<p><b>Имя: </b>{{ client.name }}</p>
-	<p><b>Номер телефона:</b> <a href="https://wa.me/{{ client.phone_number }}">+{{ client.phone_number }}</a></p>
-	{% comment %} <p><b>Последний адрес доставки: </b>{{ client.address }}</p> {% endcomment %}
+	<p><b>Номер телефона:</b> <a id="phone-number" href="https://wa.me/{{ client.phone_number }}">+{{ client.phone_number }}</a></p>
 	<p><b>Общая сумма заказов: </b>{{ total_sum }}₸</p>
 
 	<br>
@@ -56,6 +55,4 @@
 			{% endif %}
 		{% endfor %}
 	</table>
-	{% comment %} <p>Список заказов клиентов будет добавлен в будущем...</p> {% endcomment %}
-
 {% endblock body %}

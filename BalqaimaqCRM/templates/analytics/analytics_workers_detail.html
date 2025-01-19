@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	Работник +{{ worker.phone_number }}
+{% endblock title %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/analytics.css' %}">
+{% endblock link %}
+
+{% block body %}
+	<div class="heading">
+		{% if "update" in request.META.HTTP_REFERER %}
+			<button class="back-without-absolute" onclick="window.location='{% url 'analytics_workers_list' %}'">🠐 Назад</button>
+		{% else %}
+			<button class="back-without-absolute" onclick="history.back()">🠐 Назад</button> 
+		{% endif %}
+
+		<h1>Аналитика работника</h1>
+
+		<button class="change" onclick="window.location='{% url 'analytics_workers_update' worker.phone_number %}'">Изменить</button>
+		<button class="delete" onclick="window.location='{% url 'analytics_workers_delete' worker.phone_number %}'">Удалить</button>
+
+		<select id="select" name="select">
+			<option value="cw">На этой неделе</option>
+			<option value="pw">На прошлой неделе</option>
+			<option value="cm">В этом месяце</option>
+			<option value="pm">В прошлом месяце</option>
+		</select>
+	</div>
+	
+	<p><b>Имя: </b>{{ worker.name }}</p>
+	<p><b>Номер телефона:</b> <a id="phone-number" href="https://wa.me/{{ worker.phone_number }}">+{{ worker.phone_number }}</a></p>
+	<b>Общее количество произведденных продуктов за это время:</b><br>
+	{% for work, products in supplies.items %}
+		{% if not products %}
+			<p> - ...</p>
+		{% else %}
+			{% for product, amount in products.items %}
+				<p> - {{ product }}: {{ amount }} кг</p>
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+
+	<div class="chart">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="{% static 'js/analytics_workers.js' %}"></script>
+{% endblock body %}

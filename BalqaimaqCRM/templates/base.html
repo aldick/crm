@@ -12,6 +12,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 <body>
 	<header>
@@ -30,7 +31,7 @@
 					<div class="dropdown-content">
 						<a href="{% url 'analytics_selling' %}">Аналитика продаж</a>
 						<a href="{% url 'analytics_products' %}">Аналитика товаров</a>
-						<a href="{% url 'analytics_workers' %}">Аналитика рабочих</a>
+						<a href="{% url 'analytics_workers_list' %}">Аналитика рабочих</a>
 						<a href="{% url 'history_of_supply' %}">История поставок</a>
 					</div>
 				</div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock link %}
+
+{% block title %}Изменение работника {{ worker.phone_number }}{% endblock title %}
+
+{% block body %}
+	<button onclick="window.location='{% url 'analytics_workers_detail' worker.phone_number %}'" class="back">🠐 Назад</button>
+	<div class="center">
+		<form method="post">
+			<h1>Изменение клиента +{{ worker.phone_number }}</h1>
+			{% csrf_token %}
+
+			{{ form.as_table }}
+			<button type="submit">Сохранить</button>
+		</form>
+	</div>
+{% endblock body %}
