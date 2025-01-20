@@ -9,6 +9,7 @@ h1, h2 {
 }
 
 select {
+	margin-left: auto;
 	height: 50px;
 	font-size: 18px;
 	width: 300px;

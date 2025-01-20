@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	
 	let position = url.search("date")
 	let date = url[position+5] + url[position+6]
-	if (date == ':/') date = "cw";
+	if (date == ':/' || date == "s:") date = "cw";
 	switch(date) {
 		case 'cw': // current week
 			document.getElementById("select").selectedIndex = "0";

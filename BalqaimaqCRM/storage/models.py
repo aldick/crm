@@ -40,13 +40,9 @@ class Combo(models.Model):
         return reverse("combo_detail", args=[self.id])
     
 class ProductsInCombo(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    combo = models.ForeignKey(Combo, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Продукт")
+    combo = models.ForeignKey(Combo, on_delete=models.CASCADE, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество")
-    
-    def __str__(self):
-        return f'{self.combo.name}     {self.product.name}'
-    
     
 class Supply(models.Model):
     product = models.ForeignKey(Product,
@@ -57,7 +53,7 @@ class Supply(models.Model):
                                related_name="supplies",
                                on_delete=models.CASCADE,
                                verbose_name="Рабочий")
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Количество", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

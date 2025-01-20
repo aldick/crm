@@ -1,3 +1,9 @@
+.heading {
+	display: flex;
+	align-items: center;
+	margin-top: 50px;
+}
+
 .detail {
 	display: flex;
 }
@@ -13,17 +19,16 @@
 
 .detail-name {
 	color: black;
-	margin-bottom: 30px;
 }
 
 .detail-sell-price,
-.detail-cost-price {
-	font-size: 20px;
+.detail-cost-price,
+p {
+	font-size: 15px;
 }
 
 .detail-description,
 .detail-button {
-	margin-top: 20px;
 	margin-right: 50px;
 }
 
@@ -46,8 +51,8 @@
 	transform:rotate(-5deg);
 }
 
-h2 {
-	margin-top: 50px;
+h1, h2 {
+	margin-right: 20px;
 }
 
 .products {
@@ -57,5 +62,10 @@ h2 {
 .products, .products > li {
 	margin-left: 20px;
 	list-style-type: disc;
+}
+
+.delete {
+	color: red;
+	text-decoration: underline;
 }
 

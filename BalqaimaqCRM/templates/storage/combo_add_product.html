@@ -23,24 +23,29 @@
 			<div class="detail-text">
 				<div class="heading">
 					<h1 class="detail-name">{{ combo.name }}</h1>
-					<button onclick="window.location=''" class="detail-button">Удалить</button>	
 				</div>
 				<div class="heading">
 					<h2>Подробности комбо:</h2>
-					<button onclick="window.location='{% url 'combo_update' combo.id %}'" class="detail-button">Изменить</button>
 				</div>
 				<p class="detail-sell-price">Цена при продаже: {{ combo.price }} ₸ <span class="x">{{ combo.discount|add:combo.price }} ₸</span></p>
 				<p class="detail-description">Описание: <br> {{ combo.description|linebreaks }}</p>
 				<div class="products-list">
 					<div class="heading">
 						<h2>Продукты в комбо:</h2>
-						<button onclick="window.location='{% url 'add_product_to_combo' combo.id %}'"  class="detail-button">Изменить</button>
 					</div>
 					<ul class="products">
 					{% for product in products_in_combo %}
-						<li>{{ product.product.name }}: {{ product.amount }} кг</li>
+						<li>
+							{{ product.product.name }}: {{ product.amount }} кг
+							<a class="delete" href="{% url 'remove_product_from_combo' combo.id product.product.id %}"> Удалить </a>
+						</li>
 					{% endfor %}
 					</ul>
+					<form method="post">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<button type="submit">Добавить продукт</button>
+					</form>
 				</div>
 			</div>
 			
