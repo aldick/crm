@@ -23,7 +23,7 @@
 			<div class="detail-text">
 				<div class="heading">
 					<h1 class="detail-name">{{ combo.name }}</h1>
-					<button onclick="window.location=''" class="detail-button">Удалить</button>	
+					<button onclick="window.location='{% url 'combo_delete' combo.id  %}'" class="detail-button">Удалить</button>	
 				</div>
 				<div class="heading">
 					<h2>Подробности комбо:</h2>

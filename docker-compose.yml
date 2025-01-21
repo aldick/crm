@@ -9,8 +9,7 @@ services:
       - 8001:8001
     image: web:django
     container_name: django_container
-    # command: ["python", "BalqaimaqCRM//manage.py", "runserver", "0.0.0.0:8000"]
-    command: sh -c "cd BalqaimaqCRM && gunicorn --bind 0.0.0.0:8001 BalqaimaqCRM.wsgi"
+    command: sh -c "cd BalqaimaqCRM && gunicorn -w 5 --bind 0.0.0.0:8001 BalqaimaqCRM.wsgi"
     environment:
     - POSTGRES_DB=postgres
     - POSTGRES_USER=postgres
@@ -34,14 +33,6 @@ services:
     - POSTGRES_PASSWORD=postgres
     networks:
     - djangonetwork
-  nginx:
-    build: ./nginx
-    image: nginx
-    container_name: "nginx"
-    ports:
-      - 80:80
-    depends_on:
-      - web
 
 networks:
   djangonetwork:

@@ -156,3 +156,9 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://www.balqaimaq.work.gd', 'https://balqaimaq.work.gd']
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True

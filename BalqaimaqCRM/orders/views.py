@@ -279,6 +279,20 @@ def orders_delete_view(request, order_id):
             product = Product.objects.get(id=item.product_id)
             product.amount += item.amount
             product.save()
+        
+        order_combos = OrderComboItem.objects.filter(order_id=order_id)
+        products_in_combo_with_amount = {}
+        for order_combo in order_combos:
+            temp = ProductsInCombo.objects.filter(combo=order_combo.combo.id)
+            products_in_combo_with_amount[order_combo.combo.name] = {'amount': order_combo.amount}
+            for product in temp:
+                products_in_combo_with_amount[order_combo.combo.name][product.product.name] = product.amount
+                product.product.amount += product.amount
+                product.save()
+                
+        order.phone_number.total -= order.get_total_cost()
+        order.phone_number.save()
+        
         order.delete()
         return redirect('orders_list')
     return render(request, "orders/orders_delete.html", {
@@ -305,7 +319,8 @@ def orders_item_delete_view(request, item_id):
         return redirect("orders_detail", order_id)
     return render(request, "orders/orders_delete.html", {
         "section": "orders",
-        "order": order_item 
+        "order": order_item,
+        "order_id": order.id 
     })
     
 @login_required
@@ -330,7 +345,8 @@ def orders_combo_delete_view(request, combo_id, order_id):
     
     return render(request, "orders/orders_delete.html", {
         "section": "orders",
-        "order": order_combo
+        "order": order_combo,
+        "order_id": order.id 
     })
     
 def orders_column_update_view(request, order_id, order_stage):
