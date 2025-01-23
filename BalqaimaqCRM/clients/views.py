@@ -140,6 +140,7 @@ def clients_delete_view(request, pk):
 
     if request.method == "POST":
         client.is_active = False
+        client.delete()
         client.save()
         return redirect('clients_list')
     return render(request, "clients/clients_delete.html", {
