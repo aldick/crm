@@ -10,12 +10,8 @@ services:
     image: web:django
     container_name: django_container
     command: sh -c "cd BalqaimaqCRM && gunicorn -w 5 --bind 0.0.0.0:8001 BalqaimaqCRM.wsgi"
-    environment:
-    - POSTGRES_DB=postgres
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
-    - DEBUG=true
-    - SECRET_KEY=django-insecure-pt86v0=objn6@th9e^pe9tmucc!#f_0iyxlc2)7y=7+=zlr4hc
+    env_file:
+      - .env
     depends_on:
       - db
     links:
@@ -27,10 +23,8 @@ services:
     restart: always
     volumes:
     - ./BalqaimaqCRM/data/db:/var/lib/postgresql/data:z
-    environment:
-    - POSTGRES_DB=postgres
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env
     networks:
     - djangonetwork
 

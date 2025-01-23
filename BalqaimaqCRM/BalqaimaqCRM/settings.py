@@ -4,7 +4,8 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'SIGMa'
 
 # DEBUG = os.environ.get('DEBUG').lower() in ('true', '1', 't')
 DEBUG = True
@@ -55,37 +56,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BalqaimaqCRM.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
+    }
+}
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_DB'),
-#         'USER': os.environ.get('POSTGRES_USER'),
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-#         'HOST': 'db',
-#         'PORT': 5432,
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 LANGUAGE_CODE = 'ru-RU'
 TIME_ZONE = 'Europe/Astana'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,10 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -114,16 +103,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -135,9 +117,3 @@ LOGOUT_URL = 'logout'
 
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ['https://www.balqaimaq.work.gd', 'https://balqaimaq.work.gd']
-
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_PRELOAD = True
-SESSION_COOKIE_SECURE = True

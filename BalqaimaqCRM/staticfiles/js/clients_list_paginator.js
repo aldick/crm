@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		if(window.pageYOffset > margin && !emptyPage && !blockRequest) {
 			blockRequest = true;
 			page += 1;
-			console.log(page)
 			
 			if(searchParams.has('phone_number')) {
 				fetch(`?phone_number=${phone_number}&clients_only=1&page=`+page)

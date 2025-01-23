@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	})
 	.then(function(data){ 
 		JsonData = data;
-		console.log(data)
 		createPieChart(document.getElementById('myChart2'), data);
 	});	
 
@@ -57,12 +56,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	})
 	.then(function(data){ 
 		JsonData = data;
-		console.log(data)
 		createPieChart(document.getElementById('myChart3'), data);
 	});	
 
 	document.getElementById('select').addEventListener('change', function() {
-		// console.log('You selected: ', this.value);
 		window.location.href = '?date=' + this.value
 	});
 })
@@ -76,13 +73,11 @@ function createChart(data, type, date){
 		labels = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 		for (var key in data.days) {
 			values.push(data["days"][key])
-			// console.log( "Ключ: " + key + " значение: " + data["days"][key] );
 		}
 	} else {
 		for (var key in data.days) {
 			labels.push(key)
 			values.push(data["days"][key])
-			// console.log( "Ключ: " + key + " значение: " + data["days"][key] );
 		}
 	}
 

@@ -153,7 +153,6 @@ def get_selling(request, date):
         
     if date[1] == 'w':         
         for order in orders:
-            print(order.created_at.weekday())
             total_sum += order.get_total_cost()
             orders_dict["days"][order.created_at.weekday()+1] += order.get_total_cost()
     elif date[1] == 'm':
@@ -162,7 +161,6 @@ def get_selling(request, date):
             orders_dict["days"][order.created_at.day] = order.get_total_cost()
          
     orders_dict["total_sum"] = total_sum
-    print(orders_dict)
     return JsonResponse(orders_dict)
     
 def get_products(request, date):
@@ -178,7 +176,6 @@ def get_products(request, date):
     for item in order_items:
         if item.order.created_at.date() >= start and item.order.created_at.date() < end:
             products_list[item.product.name] += item.amount
-            print(item.order)
     
     return JsonResponse(products_list)
 

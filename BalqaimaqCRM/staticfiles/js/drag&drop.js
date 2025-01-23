@@ -155,10 +155,8 @@ columnsContainer.addEventListener("click", (event) => {
 //* placeholder tasks
 
 let tasks = document.getElementsByClassName("task");
-console.log("tasks length:", tasks.length)
 
 for (let i=0; i<tasks.length; i++) {
 	  tasks[i].addEventListener("dragstart", handleDragstart);
   	tasks[i].addEventListener("dragend", handleDragend);
-    console.log("hui")
 }

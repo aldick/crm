@@ -11,7 +11,6 @@ function addScript(src){
 }
 
 function date_select() {
-	console.log(month, year, date)
 	if(month == null && year == null && date == null) {
 		date = 't';
 	}
@@ -55,11 +54,9 @@ function loader(index) {
 	let query = ''
 	if(index == 7) query = `?month=${month}&year=${year}`
 	else query = `?date=${date}`
-	console.log(`/get-orders/${query}`)
 	fetch(`/orders/get-orders/${query}`)
 		.then(response => response.json())
 		.then(data => {
-			console.log(data)
 			for(let i=1; i<5; i++) {
 				let final_cost = 0
 				for(order in data[i]) {
@@ -105,7 +102,6 @@ function loader(index) {
 			document.getElementById('content').style.display = 'block';
 		})
 		.catch(error => {
-			console.log(error)
 			document.getElementById('loader').textContent = 'Ошибка загрузки';
 		});
 }
@@ -119,7 +115,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const modal = document.querySelector(".date-select");
 
 	document.getElementById('select').addEventListener('change', function() {
-		console.log('You selected: ', this.value);
 		if(this.value!='mine') {
 			window.location.href = '?date=' + this.value
 		} else {

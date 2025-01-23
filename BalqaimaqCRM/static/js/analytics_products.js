@@ -33,11 +33,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	.then(function(data){ 
 		JsonData = data;
 		createChart(JsonData, 'bar', date[1]);
-		// console.log(date[1])
 	});	
 
 	document.getElementById('select').addEventListener('change', function() {
-		// console.log('You selected: ', this.value);
 		window.location.href = '?date=' + this.value
 	});
 })
@@ -50,7 +48,6 @@ function createChart(data, type, date){
 	for (var key in data) {
 		labels.push(key)
 		values.push(data[key])
-		// console.log( "Ключ: " + key + " значение: " + data["days"][key] );
 	}
 	
 

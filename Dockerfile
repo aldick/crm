@@ -9,10 +9,8 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /django
 
 COPY ./requirements.txt /django
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /django
 
 EXPOSE 8001
-
-CMD ["python", "BalqaimaqCRM/manage.py", "runserver", "0.0.0.0:8000"]

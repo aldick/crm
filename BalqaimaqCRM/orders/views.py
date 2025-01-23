@@ -231,7 +231,6 @@ def orders_detail_view(request, order_id):
             
             combo_in_order_flag = False
             order_combo_items = OrderComboItem.objects.filter(order=order_id)
-            print(order_combo_items)
             for order_combo_item in order_combo_items:
                 if order_combo_item.combo.name == combo.name:
                     order_combo_item.amount += 1
@@ -242,7 +241,6 @@ def orders_detail_view(request, order_id):
             order = Order.objects.get(id=order_id)
             order.phone_number.total += order_combo_add_form.combo.price * order_combo_add_form.amount
             
-            print(order.phone_number.total, order_combo_add_form.combo.price * order_combo_add_form.amount)
             order.phone_number.save()
             
             order_combo_add_form.order_id = order_id
@@ -327,7 +325,6 @@ def orders_item_delete_view(request, item_id):
 def orders_combo_delete_view(request, combo_id, order_id):
     order_combo = OrderComboItem.objects.get(combo_id=combo_id, order_id=order_id)
     order_id = order_combo.order_id
-    print(order_combo.order, order_id)
     combo = Combo.objects.get(name=order_combo.combo.name)
     products = ProductsInCombo.objects.filter(combo=combo)
     order = Order.objects.get(id=order_id)
