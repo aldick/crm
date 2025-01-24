@@ -1,5 +1,6 @@
 import datetime
 from calendar import monthrange
+from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url, HttpResponse
 from django.http import JsonResponse
@@ -12,6 +13,8 @@ from orders.models import OrderComboItem
 from .forms import OrderCreateForm, OrderUpdateForm, OrderItemAddForm, OrderComboAddForm
 from analytics.views import _get_days
 
+
+
 def _remove_samsa_from_storage(amount):
     samsa = Product.objects.get(name="Самса с говядиной")
     samsa.amount -= amount
@@ -21,25 +24,27 @@ def _remove_samsa_from_storage(amount):
         samsa.save()
 
 def _add_samsa_gift(order, products_in_combo):
-    if int(order.get_total_cost()) >= 15000 and "Самса в подарок 1 кг" not in products_in_combo and order.created_at.weekday() == 4:
+    total_cost = order.get_total_cost()
+    
+    if int(total_cost) >= 15000 and "Самса в подарок 1 кг" not in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
         gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
         gift.save()
         _remove_samsa_from_storage(amount=1)
     
-    elif int(order.get_total_cost()) >= 10000 and "Самса в подарок 0.5 кг" not in products_in_combo and order.created_at.weekday() == 4:
+    elif int(total_cost) >= 10000 and "Самса в подарок 0.5 кг" not in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
         gift = OrderComboItem(order_id=order.id, combo_id=samsa_combo.id, amount=1)
         gift.save()
-        _remove_samsa_from_storage(amount=1)
+        _remove_samsa_from_storage(amount=Decimal("0.5"))
             
-    if int(order.get_total_cost()) < 10000 and "Самса в подарок 0.5 кг" in products_in_combo and order.created_at.weekday() == 4:
+    if int(total_cost) < 10000 and "Самса в подарок 0.5 кг" in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 0.5 кг")
         gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
         gift.delete()
-        _remove_samsa_from_storage(amount=-1)
+        _remove_samsa_from_storage(amount=Decimal("-0.5"))
         
-    if int(order.get_total_cost()) < 15000 and "Самса в подарок 1 кг" in products_in_combo and order.created_at.weekday() == 4:
+    if int(total_cost) < 15000 and "Самса в подарок 1 кг" in products_in_combo and order.created_at.weekday() == 4:
         samsa_combo = Combo.objects.get(name="Самса в подарок 1 кг")
         gift = OrderComboItem.objects.get(order_id=order.id, combo_id=samsa_combo.id)
         gift.delete()
