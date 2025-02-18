@@ -9,6 +9,7 @@
 {% block link %}
 	<link rel="stylesheet" href="{% static 'css/products_list.css' %}">
 	<link rel="stylesheet" href="{% static 'css/orders_detail.css' %}">
+	<script src="{% static 'js/order_detail_copy.js' %}"></script>
 {% endblock link %}
 
 {% block body %}
@@ -33,6 +34,7 @@
 		<div style="margin-top: 20px;" class="heading">
 			<button class="update" onclick="window.location='{% url 'orders_update' order.id %}'">Изменить</button>
 			<button class="delete" onclick="window.location='{% url 'orders_delete' order.id %}'">Удалить</button>
+			<button class="copy" onclick="copyText()">Копия</button>
 		</div>
 
 		<h2>Добавить продукт</h2>
@@ -168,6 +170,19 @@
 				<th></th>
 			</tr>
 		</table>
-		
+	</div>
+	<div id="copy">
+		<p>Заказ #{{order.id}}</p>
+		<p>Клиент: +{{order.phone_number}}</p>
+		<p>Адрес: {{order.address}}</p>
+		<p>Дата заказа: {{order.created_at|date:"j.m.Y" }}</p>
+		<p>Время: {{order.created_at|date:"H:i" }}</p>
+		<p>Тип оплаты: {{order.get_type_of_payment_display}}</p>
+		<p>Тип заказа: {{order.get_type_of_order_display}}</p>
+		<p>Цена: {{order.get_total_cost}} ₸</p>
+		<p>Продукты:</p>
+		{% for name, amount in total_products_in_order.items %}
+			<p>- {{ name }}: {{ amount }} кг</p>
+		{% endfor %}
 	</div>
 {% endblock body %}

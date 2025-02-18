@@ -4,7 +4,7 @@ services:
     restart: always
     volumes:
       - .:/django
-      - static-data:/BalqaimaqCRM/staticfiles
+      - static-data:/django/BalqaimaqCRM/staticfiles
     ports:
       - 8001:8001
     image: web:django

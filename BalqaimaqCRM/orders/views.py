@@ -176,7 +176,22 @@ def orders_detail_view(request, order_id):
         products_in_combo_with_amount[order_combo.combo.name] = {'amount': order_combo.amount}
         for product in temp:
             products_in_combo_with_amount[order_combo.combo.name][product.product.name] = product.amount
-        
+            
+    total_products_in_order = {}
+    for order_combo in order_combos:
+        temp = ProductsInCombo.objects.filter(combo=order_combo.combo.id)
+        for product in temp:
+            if product.product.name in total_products_in_order:
+                total_products_in_order[product.product.name] += product.amount
+            else:
+                total_products_in_order[product.product.name] = product.amount
+
+    for order_item in order_items:
+        if order_item.product.name in total_products_in_order:
+            total_products_in_order[order_item.product.name] += order_item.amount
+        else:
+            total_products_in_order[order_item.product.name] = order_item.amount
+
     _add_samsa_gift(order, products_in_combo)
         
     if request.method == "POST":
@@ -267,6 +282,7 @@ def orders_detail_view(request, order_id):
         "order_items": order_items,
         'order_combos': order_combos,
         'products_in_combo': products_in_combo,
+        'total_products_in_order': total_products_in_order,
         "order_item_add_form": order_item_add_form,
         "order_combo_add_form": order_combo_add_form,
         "error": error
