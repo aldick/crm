@@ -6,11 +6,11 @@ RUN apk update && \
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /django
+WORKDIR /crm
 
-COPY ./requirements.txt /django
+COPY ./requirements.txt /crm
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /django
+COPY . /crm
 
 EXPOSE 8001

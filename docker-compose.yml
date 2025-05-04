@@ -2,35 +2,38 @@ services:
   web:
     build: .
     restart: always
-    volumes:
-      - .:/django
-      - static-data:/django/BalqaimaqCRM/staticfiles
-    ports:
-      - 8001:8001
+    expose:
+      - 8000
     image: web:django
+    volumes:
+      - static_volume:/crm/BalqaimaqCRM/staticfiles
+      - media_volume:/crm/BalqaimaqCRM/mediafiles
     container_name: django_container
-    command: sh -c "cd BalqaimaqCRM && gunicorn -w 5 --bind 0.0.0.0:8001 BalqaimaqCRM.wsgi"
+    command: sh -c "cd BalqaimaqCRM && python manage.py collectstatic --noinput && gunicorn -w 5 --bind 0.0.0.0:8000 BalqaimaqCRM.wsgi"
     env_file:
       - .env
     depends_on:
       - db
-    links:
-       - db:db
-    networks:
-       - djangonetwork
+
   db:
     image: postgres:14.5
     restart: always
     volumes:
-    - ./BalqaimaqCRM/data/db:/var/lib/postgresql/data:z
+      - postgres_data:/var/lib/postgresql/data:z
     env_file:
       - .env
-    networks:
-    - djangonetwork
 
-networks:
-  djangonetwork:
-    driver: bridge
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/crm/BalqaimaqCRM/staticfiles
+      - media_volume:/crm/BalqaimaqCRM/mediafiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
 
 volumes:
-  static-data:
+  postgres_data:
+  static_volume:
+  media_volume:
